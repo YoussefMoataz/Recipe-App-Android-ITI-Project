@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.HomeFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.HomeFragment"
         android:label="Home" >
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.SearchFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.SearchFragment"
         android:label="Search">
         <action
             android:id="@+id/action_searchFragment_to_homeFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.FavouritesFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.FavouritesFragment"
         android:label="Favourites">
         <action
             android:id="@+id/action_favouritesFragment_to_homeFragment"
