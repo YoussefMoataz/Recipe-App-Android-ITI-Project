@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.SearchFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragment"
         android:label="Search">
         <action
             android:id="@+id/action_searchFragment_to_homeFragment"
