@@ -26,7 +26,7 @@ class AuthActivity : AppCompatActivity() {
             }
 
             // Create an instance of ExampleFragment
-            val exampleFragment = RegisterFragment()
+            val exampleFragment = LoginFragment()
 
             // Add the fragment to the fragment_container FrameLayout
             supportFragmentManager.beginTransaction()

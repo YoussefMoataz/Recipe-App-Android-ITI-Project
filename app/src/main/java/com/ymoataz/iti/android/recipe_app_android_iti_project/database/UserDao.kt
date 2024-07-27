@@ -1,0 +1,16 @@
+package com.ymoataz.iti.android.recipe_app_android_iti_project.database
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.ymoataz.iti.android.recipe_app_android_iti_project.User
+
+@Dao
+interface UserDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: User)
+
+    @Query("select count(*) from User where email =:email and password=:password")
+    suspend fun login(email: String,password:String):Int
+}
