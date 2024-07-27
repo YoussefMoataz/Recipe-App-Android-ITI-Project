@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Recipe-App-Android-ITI-Project</string>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="orange">#FFA500</color>
+    <color name="search_hint_color">#FFA500</color>
+    <string name="search">Search</string>
 </resources>
