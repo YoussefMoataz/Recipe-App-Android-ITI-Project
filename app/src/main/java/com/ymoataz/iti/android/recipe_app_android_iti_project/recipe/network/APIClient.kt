@@ -7,4 +7,8 @@ object APIClient:RemoteDataSource {
         return RetrofitHelper.apiService.getRandomMeal()
     }
 
+    override suspend fun search(mealName: String): MyResponse {
+        return RetrofitHelper.apiService.search(mealName)
+    }
+
 }
