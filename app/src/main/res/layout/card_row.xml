@@ -2,63 +2,77 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/single_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
+    app:cardBackgroundColor="@color/cardBackgroundColor"
     app:cardCornerRadius="16dp"
-    app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/white"
-    android:backgroundTint="@color/cardBackgroundColor">
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/recipeImageView"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:scaleType="centerCrop"
+            android:layout_height="200dp"
             android:contentDescription="@string/recipe_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/recipeTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageButton
             android:id="@+id/favoriteIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/favourites"
             android:padding="4dp"
-            android:contentDescription="@string/favoriteborder_icon"
             android:src="@drawable/baseline_favorite_border_24"
-            app:tint="@color/heartColor"
-            app:layout_constraintTop_toTopOf="@+id/recipeImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/recipeImageView"
+            app:layout_constraintVertical_bias="0.0"
+            app:tint="@color/heartColor" />
 
         <TextView
             android:id="@+id/recipeTitleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:layout_marginTop="12dp"
             android:text="@string/textview"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/recipeImageView"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipeImageView" />
+
+        <TextView
+            android:id="@+id/recipeCategoryTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/category"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recipeTitleTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
