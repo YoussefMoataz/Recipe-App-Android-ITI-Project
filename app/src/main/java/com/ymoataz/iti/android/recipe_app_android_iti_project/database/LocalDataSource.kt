@@ -7,4 +7,8 @@ interface LocalDataSource {
 
     suspend fun login(email: String,password:String):Int
 
+    suspend fun checkEmailIfExistBefore(email: String):Int
+
+    suspend fun clearUsers()
+
 }

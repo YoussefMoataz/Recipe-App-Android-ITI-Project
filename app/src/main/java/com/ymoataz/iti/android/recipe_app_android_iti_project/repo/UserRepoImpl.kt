@@ -12,4 +12,12 @@ class UserRepoImpl(private val localDataSource: LocalDataSource): UserRepo {
     override suspend fun login(email: String, password: String): Boolean {
         return localDataSource.login(email, password)>0
     }
+
+    override suspend fun checkEmailIfExistBefore(email: String): Boolean {
+        return localDataSource.checkEmailIfExistBefore(email)>0
+    }
+
+    override suspend fun clearUsers() {
+        localDataSource.clearUsers()
+    }
 }

@@ -13,4 +13,10 @@ interface UserDao {
 
     @Query("select count(*) from User where email =:email and password=:password")
     suspend fun login(email: String,password:String):Int
+
+    @Query("select count(*) from User where email =:email ")
+    suspend fun checkEmailIfExistBefore(email: String):Int
+
+    @Query("delete from User")
+    suspend fun clearUsers()
 }

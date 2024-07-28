@@ -18,4 +18,13 @@ class LocalDataSourceImpl(private val dao: UserDao): LocalDataSource {
         return dao.login(email, password)
     }
 
+    override suspend fun checkEmailIfExistBefore(email: String): Int {
+        return dao.checkEmailIfExistBefore(email)
+    }
+
+    override suspend fun clearUsers() {
+         dao.clearUsers()
+    }
+
+
 }

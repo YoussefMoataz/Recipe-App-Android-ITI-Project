@@ -48,14 +48,14 @@ class RegisterFragment : Fragment() {
         email=view.findViewById(R.id.editTextEmailInRegister)
         password=view.findViewById(R.id.editTextPasswordInRegister)
         regBtn=view.findViewById(R.id.btnRegInRegister)
-        val isEmailValid=isEmailValid(email.text.toString())
+        //val isEmailValid=isEmailValid(email.text.toString())
 
         addTextWatcher(fname)
         addTextWatcher(lname)
         addTextWatcher(email)
         addTextWatcher(password)
-
-        regBtn.setOnClickListener {
+        //userViewModel.clearUsers()
+       /* regBtn.setOnClickListener {
             var allFieldsFilled = true
 
             if (fname.text.toString().isEmpty()) {
@@ -84,19 +84,78 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (!isEmailValid) {
+            /*if (!isEmailValid) {
                 setBorder(email, R.color.red)
                 Toast.makeText(activity, "Invalid Email. Please enter a correct email!", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
+            }*/
+            userViewModel.checkIfEmailExistBefore(email.text.toString())
+            userViewModel.isExistBefore.observe(viewLifecycleOwner){isExistBefore->
+                if (isExistBefore){
+                    Toast.makeText(activity,"This email has been registered before!",Toast.LENGTH_LONG).show()
+                    return@observe
+                }
+                else{
+                    user = User(
+                        fName = fname.text.toString(),
+                        lName = lname.text.toString(),
+                        email = email.text.toString(),
+                        password = password.text.toString()
+                    )
+                    userViewModel.register(user)
+                }
             }
 
-            user = User(
+            /*user = User(
                 fName = fname.text.toString(),
                 lName = lname.text.toString(),
                 email = email.text.toString(),
                 password = password.text.toString()
             )
-            userViewModel.register(user)
+            userViewModel.register(user)*/
+        }*/
+        regBtn.setOnClickListener {
+            var allFieldsFilled = true
+
+            var isEmailValid=isEmailValid(email.text.toString())
+            if (!isEmailValid)
+                Toast.makeText(activity, "This is not a valid email!", Toast.LENGTH_LONG).show()
+
+            if (fname.text.toString().isEmpty()) {
+                setBorder(fname, R.color.red)
+                allFieldsFilled = false
+            }
+            if (lname.text.toString().isEmpty()) {
+                setBorder(lname, R.color.red)
+                allFieldsFilled = false
+            }
+            if (email.text.toString().isEmpty()) {
+                setBorder(email, R.color.red)
+                allFieldsFilled = false
+            }
+            if (password.text.toString().isEmpty()) {
+                setBorder(password, R.color.red)
+                allFieldsFilled = false
+            }
+            if (allFieldsFilled) {
+                userViewModel.checkIfEmailExistBefore(email.text.toString())
+            }
+            else
+                Toast.makeText(activity, "Please fill all the required information!", Toast.LENGTH_LONG).show()
+        }
+        userViewModel.isExistBefore.observe(viewLifecycleOwner) { isEmailExist ->
+            if (isEmailExist) {
+                Toast.makeText(activity, "This email has been registered before!", Toast.LENGTH_LONG).show()
+            } else {
+                 user = User(
+                    fName = fname.text.toString(),
+                    lName = lname.text.toString(),
+                    email = email.text.toString(),
+                    password = password.text.toString()
+                )
+                userViewModel.register(user)
+                Toast.makeText(activity, "Registration successful!", Toast.LENGTH_LONG).show()
+            }
         }
         return view
     }

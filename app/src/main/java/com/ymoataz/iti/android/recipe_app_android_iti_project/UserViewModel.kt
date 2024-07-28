@@ -12,6 +12,10 @@ class UserViewModel(private val repo: UserRepo):ViewModel() {
     val isSuccess: LiveData<Boolean>
         get() = _isSuccess
 
+    private val _isExistBefore = MutableLiveData<Boolean>()
+    val isExistBefore: LiveData<Boolean>
+        get() = _isExistBefore
+
     fun register(user: User){
         viewModelScope.launch {
             repo.insertUser(user)
@@ -21,6 +25,18 @@ class UserViewModel(private val repo: UserRepo):ViewModel() {
     fun login(email:String,password:String){
         viewModelScope.launch {
             _isSuccess.postValue(repo.login(email, password))
+        }
+    }
+
+    fun checkIfEmailExistBefore(email: String){
+        viewModelScope.launch {
+            _isExistBefore.postValue(repo.checkEmailIfExistBefore(email))
+        }
+    }
+
+    fun clearUsers(){
+        viewModelScope.launch {
+            repo.clearUsers()
         }
     }
 }

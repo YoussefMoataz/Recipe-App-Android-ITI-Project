@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
 
         addTextWatcher(emailEditText)
         addTextWatcher(passwordEditText)
-
+        //userViewModel.clearUsers()
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
             var allFieldsFilled = true
 
