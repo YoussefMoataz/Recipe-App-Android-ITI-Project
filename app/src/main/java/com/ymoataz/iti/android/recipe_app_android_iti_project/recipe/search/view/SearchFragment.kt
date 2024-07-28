@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
@@ -20,7 +21,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.viewModel.SearchViewModelFactory
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
     private lateinit var viewModel : SearchViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,30 +41,15 @@ class SearchFragment : Fragment() {
             {
                 recipe.add(Recipe(1, item , true))
             }
-            rv.adapter = MyAdapter(recipe, view.context)
+            rv.adapter = MyAdapter(recipe, view.context, this)
 
         }
 
-//        val data : List<Recipe> = generateCakeList()
-//        super.onCreate(savedInstanceState)
-//        val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
-//        rv.layoutManager = LinearLayoutManager(view.context)
-//        rv.adapter = MyAdapter(data, view.context)
         return view
     }
-//    private fun generateCakeList(): List<Recipe> {
-//        return listOf(
-//            Recipe("Corba", "https://www.themealdb.com/images/media/meals/58oia61564916529.jpg", false),
-//            Recipe("Tamiya", "https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg", true),
-//            Recipe("Lasagne", "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg", false),
-//            Recipe("Kafteji", "https://www.themealdb.com/images/media/meals/1bsv1q1560459826.jpg", true),
-//            Recipe("Dal fry", "https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg", true),
-//             Recipe("Corba", "https://www.themealdb.com/images/media/meals/58oia61564916529.jpg", false),
-//            Recipe("Tamiya", "https://www.themealdb.com/images/media/meals/n3xxd91598732796.jpg", true),
-//            Recipe("Lasagne", "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg", false),
-//            Recipe("Kafteji", "https://www.themealdb.com/images/media/meals/1bsv1q1560459826.jpg", true),
-//            Recipe("Dal fry", "https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg", true),
-//
-//        )
-//    }
+
+    override fun onClick(position: Int, recipe: Recipe) {
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(recipe)
+        findNavController().navigate(action)
+    }
 }
