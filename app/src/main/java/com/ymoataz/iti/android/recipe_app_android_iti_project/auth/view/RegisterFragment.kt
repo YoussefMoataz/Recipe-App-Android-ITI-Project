@@ -1,12 +1,18 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view
 
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.User
@@ -15,6 +21,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.UserViewModelFacto
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.repo.UserRepoImpl
+import java.util.regex.Pattern
 
 
 class RegisterFragment : Fragment() {
@@ -41,12 +48,86 @@ class RegisterFragment : Fragment() {
         email=view.findViewById(R.id.editTextEmailInRegister)
         password=view.findViewById(R.id.editTextPasswordInRegister)
         regBtn=view.findViewById(R.id.btnRegInRegister)
+        val isEmailValid=isEmailValid(email.text.toString())
+
+        addTextWatcher(fname)
+        addTextWatcher(lname)
+        addTextWatcher(email)
+        addTextWatcher(password)
 
         regBtn.setOnClickListener {
-            user=User(fName = fname.text.toString(), lName = lname.text.toString(), email = email.text.toString(),
-                password =password.text.toString())
+            var allFieldsFilled = true
+
+            if (fname.text.toString().isEmpty()) {
+                setBorder(fname, R.color.red)
+                allFieldsFilled = false
+            }
+            if (lname.text.toString().isEmpty()) {
+                setBorder(lname, R.color.red)
+                allFieldsFilled = false
+            }
+            if (email.text.toString().isEmpty()) {
+                setBorder(email, R.color.red)
+                allFieldsFilled = false
+            }
+            if (password.text.toString().isEmpty()) {
+                setBorder(password, R.color.red)
+                allFieldsFilled = false
+            }
+
+            if (!allFieldsFilled) {
+                Toast.makeText(
+                    activity,
+                    "Please fill all the required information!",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (!isEmailValid) {
+                setBorder(email, R.color.red)
+                Toast.makeText(activity, "Invalid Email. Please enter a correct email!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            user = User(
+                fName = fname.text.toString(),
+                lName = lname.text.toString(),
+                email = email.text.toString(),
+                password = password.text.toString()
+            )
             userViewModel.register(user)
         }
         return view
     }
+    private fun isEmailValid(email: String): Boolean {
+        val pattern: Pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
+    }
+
+    private fun addTextWatcher(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    setBorder(editText, R.color.red)
+                } else {
+                    setBorder(editText, R.color.gray)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+    private fun setBorder(editText: EditText, color: Int) {
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 16f
+            setStroke(3, ContextCompat.getColor(requireContext(), color))
+        }
+        editText.background = drawable
+    }
+
 }
