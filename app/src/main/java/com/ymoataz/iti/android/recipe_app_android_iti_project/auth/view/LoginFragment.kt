@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepoImpl
@@ -66,8 +67,10 @@ class LoginFragment : Fragment() {
         userViewModel.isSuccess.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess) {
                 Log.d("asd->>", "successsss!!")
+                findNavController().navigate(R.id.action_loginFragment_to_recipeActivity)
             } else {
                 Log.d("asd->>", "Faileddd!!")
+                Toast.makeText(activity,"Wrong email or password!",Toast.LENGTH_LONG).show()
             }
         }
         return view

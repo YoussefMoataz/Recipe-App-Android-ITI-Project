@@ -21,20 +21,20 @@ class AuthActivity : AppCompatActivity() {
 
 
 // Check if the fragment_container is present (necessary for two-pane layout support)
-        if (findViewById<FrameLayout>(R.id.fragment_container) != null) {
+       /* if (findViewById<FrameLayout>(R.id.fragment_container) != null) {
             // Check if we're being restored from a previous state, otherwise add fragment
             if (savedInstanceState != null) {
                 return
             }
 
             // Create an instance of ExampleFragment
-            val exampleFragment = RegisterFragment()
+            val exampleFragment = LoginFragment()
 
             // Add the fragment to the fragment_container FrameLayout
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, exampleFragment)
                 .commit()
-        }
+        }*/
 
     }
 }
