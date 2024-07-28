@@ -7,4 +7,7 @@
     <string name="home_screen">Home Screen</string>
     <string name="favourites_screen">Favourites Screen</string>
     <string name="search_screen">Search Screen</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="textview">textview</string>
+    <string name="favoriteborder_icon">favoriteBorder_icon</string>
 </resources>
