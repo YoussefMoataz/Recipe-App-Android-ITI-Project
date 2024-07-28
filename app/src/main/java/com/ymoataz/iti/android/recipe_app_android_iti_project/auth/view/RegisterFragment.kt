@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.User
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModel
@@ -55,65 +56,7 @@ class RegisterFragment : Fragment() {
         addTextWatcher(email)
         addTextWatcher(password)
         //userViewModel.clearUsers()
-       /* regBtn.setOnClickListener {
-            var allFieldsFilled = true
 
-            if (fname.text.toString().isEmpty()) {
-                setBorder(fname, R.color.red)
-                allFieldsFilled = false
-            }
-            if (lname.text.toString().isEmpty()) {
-                setBorder(lname, R.color.red)
-                allFieldsFilled = false
-            }
-            if (email.text.toString().isEmpty()) {
-                setBorder(email, R.color.red)
-                allFieldsFilled = false
-            }
-            if (password.text.toString().isEmpty()) {
-                setBorder(password, R.color.red)
-                allFieldsFilled = false
-            }
-
-            if (!allFieldsFilled) {
-                Toast.makeText(
-                    activity,
-                    "Please fill all the required information!",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            /*if (!isEmailValid) {
-                setBorder(email, R.color.red)
-                Toast.makeText(activity, "Invalid Email. Please enter a correct email!", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }*/
-            userViewModel.checkIfEmailExistBefore(email.text.toString())
-            userViewModel.isExistBefore.observe(viewLifecycleOwner){isExistBefore->
-                if (isExistBefore){
-                    Toast.makeText(activity,"This email has been registered before!",Toast.LENGTH_LONG).show()
-                    return@observe
-                }
-                else{
-                    user = User(
-                        fName = fname.text.toString(),
-                        lName = lname.text.toString(),
-                        email = email.text.toString(),
-                        password = password.text.toString()
-                    )
-                    userViewModel.register(user)
-                }
-            }
-
-            /*user = User(
-                fName = fname.text.toString(),
-                lName = lname.text.toString(),
-                email = email.text.toString(),
-                password = password.text.toString()
-            )
-            userViewModel.register(user)*/
-        }*/
         regBtn.setOnClickListener {
             var allFieldsFilled = true
 
@@ -155,6 +98,7 @@ class RegisterFragment : Fragment() {
                 )
                 userViewModel.register(user)
                 Toast.makeText(activity, "Registration successful!", Toast.LENGTH_LONG).show()
+                findNavController().navigate(R.id.action_registerFragment_to_recipeActivity)
             }
         }
         return view

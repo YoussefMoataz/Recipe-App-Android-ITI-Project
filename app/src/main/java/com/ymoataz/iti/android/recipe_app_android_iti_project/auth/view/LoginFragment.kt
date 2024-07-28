@@ -37,10 +37,13 @@ class LoginFragment : Fragment() {
         userViewModel= ViewModelProvider(this,userViewModelFactory).get(UserViewModel::class.java)
         val emailEditText=view.findViewById<EditText>(R.id.editTextEmailAddress)
         val passwordEditText=view.findViewById<EditText>(R.id.editTextPassword)
-
+        val regBtn=view.findViewById<Button>(R.id.btnRegister)
         addTextWatcher(emailEditText)
         addTextWatcher(passwordEditText)
         //userViewModel.clearUsers()
+        regBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
             var allFieldsFilled = true
 
@@ -64,6 +67,7 @@ class LoginFragment : Fragment() {
             val password = passwordEditText.text.toString()
             userViewModel.login(email, password)
         }
+
         userViewModel.isSuccess.observe(viewLifecycleOwner) { isSuccess ->
             if (isSuccess) {
                 Log.d("asd->>", "successsss!!")
