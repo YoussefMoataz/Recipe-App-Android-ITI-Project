@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
@@ -26,15 +28,25 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val mainCard= view.findViewById<View>(R.id.single_card)
         val cardImage= view.findViewById<ImageView>(R.id.recipeImageView)
         val cardTitle= view.findViewById<TextView>(R.id.recipeTitleTextView)
         val cardCategory= view.findViewById<TextView>(R.id.recipeCategoryTextView)
+        val favouriteIcon= view.findViewById<ImageButton>(R.id.favoriteIcon)
+        var isFavourite = false
+        favouriteIcon.setOnClickListener{
+            updateFavoriteIcon(favouriteIcon, isFavourite)
+            isFavourite = !isFavourite
+        }
         gettingViewModelReady()
         viewModel.getRandomMeal()
         viewModel.randomMeal.observe(viewLifecycleOwner) {
             cardTitle.text = it.meals[0].strMeal
             cardCategory.text = it.meals[0].strCategory
             Glide.with(this).load(it.meals[0].strMealThumb).into(cardImage)
+        }
+        mainCard.setOnClickListener{
+            Toast.makeText(context, "Card Clicked", Toast.LENGTH_SHORT).show()
         }
         return view
     }
@@ -49,5 +61,14 @@ class HomeFragment : Fragment() {
         )
         viewModel= ViewModelProvider(this,ProductsViewModelFactory).get(HomeViewModel::class.java)
     }
+    private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
+        run {
+            if (isFavourite) {
+                favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+            } else {
+                favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
+            }
 
+        }
+    }
 }
