@@ -13,10 +13,23 @@
         android:id="@+id/searchFragment"
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.presentation.DetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="recipe"
+            app:argType="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe" />
+    </fragment>
 </navigation>

@@ -19,4 +19,8 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="register">Register</string>
+    <string name="instructions_title">Instructions</string>
+    <string name="recipe_youtube">Youtube</string>
+    <string name="ingredients_title">Ingredients</string>
+    <string name="details">Details</string>
 </resources>
