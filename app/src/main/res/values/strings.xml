@@ -10,4 +10,11 @@
     <string name="recipe_image">Recipe Image</string>
     <string name="textview">textview</string>
     <string name="favoriteborder_icon">favoriteBorder_icon</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_please_register">Don\'t have an account? Please register!</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="register">Register</string>
 </resources>
