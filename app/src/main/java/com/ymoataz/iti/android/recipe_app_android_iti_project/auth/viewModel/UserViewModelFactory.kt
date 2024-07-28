@@ -1,8 +1,8 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project
+package com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ymoataz.iti.android.recipe_app_android_iti_project.repo.UserRepo
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepo
 
 class UserViewModelFactory(private val repository: UserRepo) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

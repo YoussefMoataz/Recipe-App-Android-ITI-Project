@@ -16,9 +16,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
-import com.ymoataz.iti.android.recipe_app_android_iti_project.repo.UserRepoImpl
-import com.ymoataz.iti.android.recipe_app_android_iti_project.UserViewModel
-import com.ymoataz.iti.android.recipe_app_android_iti_project.UserViewModelFactory
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepoImpl
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModel
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 
 class LoginFragment : Fragment() {

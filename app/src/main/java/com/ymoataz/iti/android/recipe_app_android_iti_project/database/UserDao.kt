@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ymoataz.iti.android.recipe_app_android_iti_project.User
 
 @Dao
 interface UserDao {

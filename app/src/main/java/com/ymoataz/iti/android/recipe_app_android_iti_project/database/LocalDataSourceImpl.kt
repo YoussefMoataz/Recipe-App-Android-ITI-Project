@@ -1,7 +1,5 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.database
 
-import com.ymoataz.iti.android.recipe_app_android_iti_project.User
-
 class LocalDataSourceImpl(private val dao: UserDao): LocalDataSource {
     //private var dao:UserDao
 

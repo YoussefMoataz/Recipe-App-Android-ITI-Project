@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ymoataz.iti.android.recipe_app_android_iti_project.User
 
 @Database(entities = [User::class], version = 1)
 abstract class AppDatabase:RoomDatabase() {

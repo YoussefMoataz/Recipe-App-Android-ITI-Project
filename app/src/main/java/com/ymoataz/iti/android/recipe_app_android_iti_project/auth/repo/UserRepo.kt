@@ -1,6 +1,6 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project.repo
+package com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo
 
-import com.ymoataz.iti.android.recipe_app_android_iti_project.User
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.User
 
 interface UserRepo {
     suspend fun insertUser(user: User)

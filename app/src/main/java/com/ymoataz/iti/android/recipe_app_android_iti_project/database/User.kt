@@ -1,4 +1,4 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project
+package com.ymoataz.iti.android.recipe_app_android_iti_project.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
