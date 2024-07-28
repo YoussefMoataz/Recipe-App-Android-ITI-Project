@@ -5,6 +5,6 @@
     <string name="favourites">Favourites</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_screen">Home Screen</string>
-    <string name="favourties_screen">Favourties Screen</string>
+    <string name="favourites_screen">Favourites Screen</string>
     <string name="search_screen">Search Screen</string>
 </resources>
