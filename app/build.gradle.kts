@@ -62,6 +62,5 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room)
     ksp(libs.androidx.room.compiler)
-//    implementation(libs.showmoretext)
     implementation(libs.readmore.textview)
 }

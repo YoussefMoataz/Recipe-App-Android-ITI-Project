@@ -20,7 +20,6 @@ ksp = "1.9.21-1.0.15"
 activity = "1.9.0"
 lifeCyclelive = "2.6.1"
 lifecycleview = "2.6.1"
-showmoretext = "1.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,7 +43,7 @@ navigation-safe-args = { group = "androidx.navigation", name = "navigation-safe-
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifeCyclelive" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleview" }
-showmoretext = { module = "com.github.mahimrocky:ShowMoreText", version.ref = "showmoretext" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
