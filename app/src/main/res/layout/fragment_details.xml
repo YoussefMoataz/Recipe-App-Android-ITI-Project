@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".recipe.details.presentation.DetailsFragment">
+    tools:context=".recipe.details.presentation.views.DetailsFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -37,7 +37,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/recipe_image_card_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -46,10 +46,17 @@
         <ImageView
             android:id="@+id/recipe_thumb_image_view"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:contentDescription="@string/recipe_image"
             android:scaleType="centerCrop"
+            android:visibility="visible"
             tools:src="@tools:sample/backgrounds/scenic" />
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/recipe_youtube_player_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -80,11 +87,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:text="-"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@id/recipe_area_text_view"
         app:layout_constraintEnd_toStartOf="@+id/recipe_category_text_view"
-        app:layout_constraintStart_toEndOf="@+id/recipe_area_text_view"
-        tools:text="-" />
+        app:layout_constraintStart_toEndOf="@+id/recipe_area_text_view" />
 
     <TextView
         android:id="@+id/recipe_category_text_view"
@@ -121,24 +129,16 @@
                 android:text="@string/instructions_title"
                 android:textSize="18sp" />
 
-            <TextView
+            <com.colormoon.readmoretextview.ReadMoreTextView
                 android:id="@+id/recipe_instructions_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:maxLines="4"
                 android:textSize="20sp"
                 tools:text="Instructions details" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/recipe_youtube_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/recipe_youtube"
-        android:src="@drawable/recipe_youtube_icon"
-        app:layout_constraintBottom_toBottomOf="@id/bottom_guideline"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline" />
 
     <TextView
         android:id="@+id/recipe_ingredients_title_text_view"
@@ -151,12 +151,23 @@
         app:layout_constraintTop_toBottomOf="@id/recipe_instructions_card_view" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipe_ingredients_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@id/bottom_guideline"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_title_text_view" />
+        app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_title_text_view"
+        tools:listitem="@layout/ingredient_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/recipe_youtube_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/recipe_youtube"
+        android:src="@drawable/recipe_youtube_icon"
+        app:layout_constraintBottom_toBottomOf="@id/bottom_guideline"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
