@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+youtube-player-core = "12.1.0"
 glide = "4.16.0"
 gson = "2.11.0"
 kotlin = "1.9.0"
@@ -43,6 +44,7 @@ navigation-safe-args = { group = "androidx.navigation", name = "navigation-safe-
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifeCyclelive" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleview" }
+youtube-player-core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtube-player-core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
