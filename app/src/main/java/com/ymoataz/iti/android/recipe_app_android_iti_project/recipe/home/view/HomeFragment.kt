@@ -10,13 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.RemoteDataSource
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragmentDirections
 
 
 class HomeFragment : Fragment() {
@@ -46,7 +49,11 @@ class HomeFragment : Fragment() {
             Glide.with(this).load(it.meals[0].strMealThumb).into(cardImage)
         }
         mainCard.setOnClickListener{
-            Toast.makeText(context, "Card Clicked", Toast.LENGTH_SHORT).show()
+            viewModel.randomMeal.value?.meals?.get(0)?.let {
+                val recipe = Recipe(1, it, isFavourite)
+                val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                findNavController().navigate(action)
+            }
         }
         return view
     }
