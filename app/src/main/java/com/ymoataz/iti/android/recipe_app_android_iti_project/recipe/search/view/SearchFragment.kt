@@ -35,9 +35,10 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
         rv.layoutManager = LinearLayoutManager(view.context)
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
-            val data = searchResult.meals
+            val data = searchResult?.meals ?: emptyList()
             var recipe = data.map { Recipe(1, it, true) }
-            if (searchView.query.isEmpty()) {
+
+            if (searchView.query.isEmpty() || recipe.isEmpty()) {
                 recipe = emptyList()
             }
             rv.adapter = MyAdapter(recipe, view.context, this)
