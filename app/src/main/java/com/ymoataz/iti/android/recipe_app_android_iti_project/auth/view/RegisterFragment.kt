@@ -127,7 +127,7 @@ class RegisterFragment : Fragment() {
     private fun setBorder(editText: EditText, color: Int) {
         val drawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
-            cornerRadius = 16f
+            cornerRadius = 70f
             setStroke(3, ContextCompat.getColor(requireContext(), color))
         }
         editText.background = drawable
