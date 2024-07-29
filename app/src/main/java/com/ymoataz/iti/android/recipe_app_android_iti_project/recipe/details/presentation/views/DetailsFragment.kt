@@ -65,7 +65,7 @@ class DetailsFragment : Fragment() {
                 YoutubeHelper.getVideoId(recipe?.meal?.strYoutube ?: "").also {
                     if (it.isEmpty()) return
 
-                    youTubePlayer.loadVideo(it, 0f)
+                    youTubePlayer.cueVideo(it, 0f)
                     myYouTubePlayer = youTubePlayer
                 }
 
