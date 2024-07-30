@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.RecipeLocalDataSourceImp
@@ -18,7 +19,6 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyA
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.repo.FavouriteRepoImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.viewModel.FavouriteViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.viewModel.FavouriteViewModelFactory
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragmentDirections
 
 
 class FavouritesFragment : Fragment(),
@@ -44,7 +44,7 @@ class FavouritesFragment : Fragment(),
 
         val favouritesRecyclerView = view.findViewById<RecyclerView>(R.id.favourites_recycler_view)
 
-        favouriteViewModel.getAllRecipes(1)
+        AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
 
         favouritesRecyclerView.layoutManager = LinearLayoutManager(view.context)
 
@@ -68,7 +68,7 @@ class FavouritesFragment : Fragment(),
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         if (isFavourite){
             favouriteViewModel.deleteRecipe(recipe)
-            favouriteViewModel.getAllRecipes(1)
+            AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
         }
     }
 

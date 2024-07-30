@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Meal
 
 @Dao
 interface RecipeDao {
@@ -18,5 +19,8 @@ interface RecipeDao {
 
     @Delete
     suspend fun deleteRecipe(recipe: Recipe)
+
+    @Query("Delete FROM Recipe where meal =:meal")
+    suspend fun deleteRecipeWithMeal(meal : Meal)
 
 }

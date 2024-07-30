@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
@@ -43,27 +45,47 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         viewModel = ViewModelProvider(this, searchViewModelFactory)[SearchViewModel::class.java]
         val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
         rv.layoutManager = LinearLayoutManager(view.context)
+
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(0, 1, it, false) }
-
-            if (searchView.query.isEmpty() || recipe.isEmpty()) {
-                if(recipe.isEmpty())
-                    notFoundTextView.visibility = View.VISIBLE
-                recipe = emptyList()
-            }
-            rv.adapter = MyAdapter(recipe, view.context,object : MyAdapter.OnRecipeItemClickListener {
-                override fun onClick(position: Int, recipe: Recipe) {
-                    val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(recipe)
-                    findNavController().navigate(action)
+            lifecycleScope.launch {
+                val recipes = AuthHelper.getUserID(requireContext())?.let { it1 ->
+                    AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it1)
                 }
-            }, this)
-            if(recipe.isNotEmpty())
-                notFoundTextView.visibility = View.GONE
+
+                var recipe = data.map { meal ->
+                    val isFavourite = recipes?.any { recipe -> recipe.meal?.idMeal == meal.idMeal }
+                    Recipe(
+                        0,
+                        AuthHelper.getUserID(requireContext()),
+                        meal,
+                        isFavourite
+                    )
+                }
+
+                if (searchView.query.isEmpty() || recipe.isEmpty()) {
+                    if (recipe.isEmpty())
+                        notFoundTextView.visibility = View.VISIBLE
+                    recipe = emptyList()
+                }
+
+                rv.adapter =
+                    MyAdapter(recipe, view.context, object : MyAdapter.OnRecipeItemClickListener {
+                        override fun onClick(position: Int, recipe: Recipe) {
+                            val action =
+                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                                    recipe
+                                )
+                            findNavController().navigate(action)
+                        }
+                    }, this@SearchFragment)
+                if (recipe.isNotEmpty())
+                    notFoundTextView.visibility = View.GONE
 
 
-            rv.adapter = MyAdapter(recipe, view.context, this, this)
+                rv.adapter = MyAdapter(recipe, view.context, this@SearchFragment, this@SearchFragment)
 
+            }
         }
         focusAndOpenKeyboard(searchView)
 
@@ -101,9 +123,15 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         if (isFavourite){
             lifecycleScope.launch {
-                AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipe(recipe)
+                recipe.meal?.let {
+                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(
+                        it
+                    )
+                }
             }
-        }else{
+        }
+        else
+        {
             lifecycleScope.launch {
                 AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
             }
