@@ -40,7 +40,6 @@ class DetailsFragment : Fragment() {
         val categoryTextView = view.findViewById<TextView>(R.id.recipe_category_text_view)
         val instructionsTextView = view.findViewById<ReadMoreTextView>(R.id.recipe_instructions_text_view)
         val ingredientsRecyclerView = view.findViewById<RecyclerView>(R.id.recipe_ingredients_recycler_view)
-        val youtubeFab = view.findViewById<FloatingActionButton>(R.id.recipe_youtube_fab)
         val thumbImageView = view.findViewById<ImageView>(R.id.recipe_thumb_image_view)
         youTubePlayerView = view.findViewById(R.id.recipe_youtube_player_view)
         var myYouTubePlayer: YouTubePlayer? = null
@@ -77,22 +76,6 @@ class DetailsFragment : Fragment() {
 
         lifecycle.addObserver(youTubePlayerView)
         youTubePlayerView.addYouTubePlayerListener(youTubePlayerListener)
-
-        youtubeFab.setOnClickListener {
-            when (thumbImageView.visibility) {
-                View.VISIBLE -> {
-                    myYouTubePlayer?.play()
-                    thumbImageView.visibility = View.GONE
-                    youTubePlayerView.visibility = View.VISIBLE
-                }
-
-                View.GONE -> {
-                    myYouTubePlayer?.pause()
-                    thumbImageView.visibility = View.VISIBLE
-                    youTubePlayerView.visibility = View.GONE
-                }
-            }
-        }
 
         return view
     }
