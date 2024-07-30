@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.RemoteDataSource
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragmentDirections
 
 
 class HomeFragment : Fragment() {
@@ -59,7 +56,7 @@ class HomeFragment : Fragment() {
         viewModel.searchedMeal.observe(viewLifecycleOwner) {
                 searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(1, it, true) }
+            var recipe = data.map { Recipe(0, 1, it, true) }
             if (recipe.isEmpty()) {
                 recipe = emptyList()
             }
@@ -75,7 +72,7 @@ class HomeFragment : Fragment() {
         }
         mainCard.setOnClickListener{
             viewModel.randomMeal.value?.meals?.get(0)?.let {
-                val recipe = Recipe(1, it, isFavourite)
+                val recipe = Recipe(0, 1, it, isFavourite)
                 val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
                 findNavController().navigate(action)
             }

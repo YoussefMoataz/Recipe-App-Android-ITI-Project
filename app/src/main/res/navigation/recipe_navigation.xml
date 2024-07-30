@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.FavouritesFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.view.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" />
     <fragment
@@ -35,7 +35,7 @@
         <argument
             android:name="recipe"
             app:nullable="true"
-            app:argType="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe" />
+            app:argType="com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
