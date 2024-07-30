@@ -29,5 +29,9 @@ class RecipeActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
+        var badge = bottomNavigationView.getOrCreateBadge(R.id.favouritesFragment)
+        badge.isVisible = true
+        badge.number = 99
     }
 }

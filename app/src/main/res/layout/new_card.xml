@@ -1,0 +1,101 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/single_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardBackgroundColor="@color/cardBackgroundColor"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
+
+    <!-- Main container for the card's content -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Recipe Image with rounded corners -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/recipe_image"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedCornerShape"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <!-- Container for the text elements (title and category) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/recipeImage"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true">
+
+            <!-- Recipe Title -->
+            <TextView
+                android:id="@+id/recipeTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/textview"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <!-- Horizontal layout for category icon and text -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <!-- Category Icon -->
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circular_background"
+                    android:contentDescription="@string/category_txt"
+                    android:padding="8dp"
+                    android:backgroundTint="@color/search_hint_color"
+                    android:src="@drawable/baseline_category_24"
+                    app:tint="@color/white" />
+
+                <!-- Category Text -->
+                <TextView
+                    android:id="@+id/recipeCategoryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/category"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Favorite Icon Button -->
+        <ImageButton
+            android:id="@+id/favoriteIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/circular_background"
+            android:contentDescription="@string/favourites"
+            android:padding="4dp"
+            android:backgroundTint="@color/search_hint_color"
+            android:src="@drawable/baseline_favorite_border_24"
+            app:tint="@color/white" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
