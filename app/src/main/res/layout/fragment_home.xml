@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="15dp"
+    android:layout_marginStart="15dp"
     tools:context=".recipe.home.view.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,9 +15,18 @@
         android:layout_height="wrap_content"
         android:text="@string/recomended_recipe"
         android:textSize="30sp"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="15dp"
-        android:textStyle="bold" />
-    <include layout="@layout/card_row" />
 
+        android:textStyle="bold" />
+    <include layout="@layout/card_row"
+
+        />
+    <TextView
+        android:id="@+id/recycle_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/popular_now"
+        android:textSize="30sp"
+
+        android:textStyle="bold" />
+    <include layout="@layout/home_recycle_view"/>
 </LinearLayout>

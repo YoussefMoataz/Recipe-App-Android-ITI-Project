@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view.HomeFragmentDirections
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.repo.SearchRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.viewModel.SearchViewModel
@@ -48,6 +49,12 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
                     notFoundTextView.visibility = View.VISIBLE
                 recipe = emptyList()
             }
+            rv.adapter = MyAdapter(recipe, view.context,object : MyAdapter.OnRecipeItemClickListener {
+                override fun onClick(position: Int, recipe: Recipe) {
+                    val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(recipe)
+                    findNavController().navigate(action)
+                }
+            })
             if(recipe.isNotEmpty())
                 notFoundTextView.visibility = View.GONE
 

@@ -24,5 +24,8 @@
     <string name="recipe_youtube">Youtube</string>
     <string name="ingredients_title">Ingredients</string>
     <string name="details">Details</string>
+    <string name="popular_now">Popular Now 🔥</string>
+    <string name="about_us">About Us</string>
+    <string name="sign_out">Sign Out</string>
     <string name="no_results_found">No results Found....</string>
 </resources>
