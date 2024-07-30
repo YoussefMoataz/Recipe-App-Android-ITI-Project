@@ -21,6 +21,7 @@ ksp = "1.9.21-1.0.15"
 activity = "1.9.0"
 lifeCyclelive = "2.6.1"
 lifecycleview = "2.6.1"
+lottieVersion="3.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,8 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifeCyclelive" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleview" }
 youtube-player-core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtube-player-core" }
+lottie-dep={group="com.airbnb.android",name="lottie",version.ref="lottieVersion"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
