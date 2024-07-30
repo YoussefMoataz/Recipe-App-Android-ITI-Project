@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
     private lateinit var viewModel: HomeViewModel
+    private lateinit var adapter: MyAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -58,27 +59,29 @@ class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
             cardCategory.text = it.meals[0].strCategory
             Glide.with(this).load(it.meals[0].strMealThumb).into(cardImage)
         }
-        val rv= view.findViewById<RecyclerView>(R.id.home_recycle_view)
-        var randomChar= getRandomLetter()
-        viewModel.searchByFirstLetter(randomChar.toString())
-        viewModel.searchedMeal.observe(viewLifecycleOwner) {
-                searchResult ->
-            val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(0, 1, it, false) }
-            if (recipe.isEmpty()) {
-                recipe = emptyList()
+
+        val rv = view.findViewById<RecyclerView>(R.id.home_recycle_view)
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        adapter = MyAdapter(emptyList(), requireContext(), object : MyAdapter.OnRecipeItemClickListener {
+            override fun onClick(position: Int, recipe: Recipe) {
+                val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                findNavController().navigate(action)
             }
-            val adapter= MyAdapter(recipe, requireContext(), object : MyAdapter.OnRecipeItemClickListener {
-                override fun onClick(position: Int, recipe: Recipe) {
-                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
-                    findNavController().navigate(action)
-                }
-            }, this)
-            rv.layoutManager = LinearLayoutManager(requireContext())
-            rv.adapter = adapter
-            adapter.notifyDataSetChanged()
+        }, this)
+        rv.adapter = adapter
+
+        val randomChar = getRandomLetter()
+        viewModel.searchByFirstLetter(randomChar.toString())
+        viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
+            val data = searchResult?.meals ?: emptyList()
+            var recipes = data.map { Recipe(0, 1, it, isFavourite) }
+            if (recipes.isEmpty()) {
+                recipes = emptyList()
+            }
+            adapter.updateData(recipes)
         }
-        mainCard.setOnClickListener{
+
+        mainCard.setOnClickListener {
             viewModel.randomMeal.value?.meals?.get(0)?.let {
                 val recipe = Recipe(0, 1, it, isFavourite)
                 val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
@@ -87,30 +90,26 @@ class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
         }
         return view
     }
+
     private fun gettingViewModelReady(){
-        val ProductsViewModelFactory=HomeViewModelFactory(
+        val ProductsViewModelFactory = HomeViewModelFactory(
             repository = HomeRepositoryImp(
                 remoteDataSource = APIClient
             )
         )
-        viewModel= ViewModelProvider(this,ProductsViewModelFactory).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, ProductsViewModelFactory).get(HomeViewModel::class.java)
     }
+
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
         run {
             if (isFavourite) {
-               favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+                favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
             } else {
-//                lifecycleScope.launch {
-//
-//                    AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(Recipe(0, 1, viewModel.randomMeal.value?.meals?.get(0), true))
-//                }
-//                Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
-
                 favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
             }
-
         }
     }
+
     fun getRandomLetter(): Char {
         return ('a'..'z').random()
     }
@@ -120,7 +119,7 @@ class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
             lifecycleScope.launch {
                 AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipe(recipe)
             }
-        }else{
+        } else {
             lifecycleScope.launch {
                 AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
             }
