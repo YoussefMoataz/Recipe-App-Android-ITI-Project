@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -31,4 +31,15 @@
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.RecipeActivity"
         android:label="activity_recipe"
         tools:layout="@layout/activity_recipe" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/splashFragment"/>
+    </fragment>
 </navigation>
