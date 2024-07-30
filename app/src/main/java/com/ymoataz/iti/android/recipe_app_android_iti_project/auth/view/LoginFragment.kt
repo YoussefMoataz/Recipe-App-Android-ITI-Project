@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepoImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModelFactory
@@ -66,11 +67,17 @@ class LoginFragment : Fragment() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             userViewModel.login(email, password)
+
         }
 
         userViewModel.isSuccess.observe(viewLifecycleOwner) { isSuccess ->
+            val email = emailEditText.text.toString()
             if (isSuccess) {
                 Log.d("asd->>", "successsss!!")
+                userViewModel.getUserIdByEmail(email)
+                userViewModel.userIdByEmail.observe(viewLifecycleOwner){userID->
+                    context?.let { AuthHelper.saveUserDataInSP(it,userID) }
+                }
                 findNavController().navigate(R.id.action_loginFragment_to_recipeActivity)
             } else {
                 Log.d("asd->>", "Faileddd!!")

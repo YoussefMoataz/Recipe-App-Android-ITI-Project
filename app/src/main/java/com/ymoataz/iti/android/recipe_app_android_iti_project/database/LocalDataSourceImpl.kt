@@ -24,5 +24,7 @@ class LocalDataSourceImpl(private val dao: UserDao): LocalDataSource {
          dao.clearUsers()
     }
 
-
+    override suspend fun getUserIdByEmail(email: String): Int {
+        return dao.getUserIdByEmail(email)
+    }
 }

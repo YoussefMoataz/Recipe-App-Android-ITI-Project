@@ -18,4 +18,7 @@ interface UserDao {
 
     @Query("delete from User")
     suspend fun clearUsers()
+
+    @Query("select id from User where email =:email")
+    suspend fun getUserIdByEmail(email: String):Int
 }

@@ -7,4 +7,5 @@ interface UserRepo {
     suspend fun login(email: String,password:String):Boolean
     suspend fun checkEmailIfExistBefore(email: String):Boolean
     suspend fun clearUsers()
+    suspend fun getUserIdByEmail(email: String):Int
 }
