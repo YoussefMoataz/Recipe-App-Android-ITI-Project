@@ -74,4 +74,7 @@ dependencies {
 
     // youtube player
     implementation(libs.youtube.player.core)
+
+    //lottie
+    implementation(libs.lottie.dep)
 }

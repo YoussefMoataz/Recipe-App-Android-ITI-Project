@@ -120,6 +120,7 @@ class RegisterFragment : Fragment() {
                     context?.let { AuthHelper.saveUserDataInSP(it,userID) }
                 }
                 findNavController().navigate(R.id.action_registerFragment_to_recipeActivity)
+                activity?.finish()
             }
         }
         return view
