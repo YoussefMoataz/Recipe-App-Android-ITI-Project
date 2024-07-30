@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeFragment"
+    android:id="@+id/recipe_nav">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -44,7 +45,10 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.AboutFragment"
-        android:label="fragment_about"
+        android:label="About"
         tools:layout="@layout/fragment_about" />
+    <action
+        android:id="@+id/action_global_aboutFragment"
+        app:destination="@id/aboutFragment" />
 
 </navigation>
