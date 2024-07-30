@@ -6,5 +6,5 @@ import retrofit2.http.Query
 interface RemoteDataSource {
     suspend fun getRandomMeal(): MyResponse
     suspend fun search(@Query("s") mealName: String): MyResponse
-
+    suspend fun searchByFirstLetter(@Query("f") letter: String): MyResponse
 }

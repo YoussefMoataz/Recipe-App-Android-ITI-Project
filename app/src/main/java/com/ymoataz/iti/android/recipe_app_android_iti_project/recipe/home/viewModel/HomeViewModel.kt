@@ -12,11 +12,18 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _randomMeal = MutableLiveData<MyResponse>()
     val randomMeal: LiveData<MyResponse> = _randomMeal
-
+    private val _searchedMeal = MutableLiveData<MyResponse>()
+    val searchedMeal: LiveData<MyResponse> = _searchedMeal
     fun getRandomMeal() {
         viewModelScope.launch {
             val response = homeRepository.getRandomMeal()
             _randomMeal.value = response
+        }
+    }
+    fun searchByFirstLetter(letter: String) {
+        viewModelScope.launch {
+            val response = homeRepository.searchByFirstLetter(letter)
+            _searchedMeal.value = response
         }
     }
 }

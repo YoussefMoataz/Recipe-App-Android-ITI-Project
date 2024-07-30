@@ -61,7 +61,8 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room)
-    ksp(libs.androidx.room.compiler)
     implementation(libs.readmore.textview)
     implementation(libs.youtube.player.core)
+    ksp(libs.androidx.room.compiler)
+
 }

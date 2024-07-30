@@ -7,4 +7,8 @@ class HomeRepositoryImp(private val remoteDataSource: RemoteDataSource): HomeRep
     override suspend fun getRandomMeal(): MyResponse {
         return remoteDataSource.getRandomMeal()
     }
+
+    override suspend fun searchByFirstLetter(letter: String): MyResponse {
+        return remoteDataSource.searchByFirstLetter(letter)
+    }
 }
