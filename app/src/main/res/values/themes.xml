@@ -4,7 +4,11 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/lavender</item>
     </style>
-
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="OptionMenuText" parent="android:TextAppearance.Widget.PopupMenu.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
     <style name="Theme.RecipeAppAndroidITIProject" parent="Base.Theme.RecipeAppAndroidITIProject" />
 </resources>

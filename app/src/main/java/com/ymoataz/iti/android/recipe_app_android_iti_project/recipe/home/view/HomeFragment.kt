@@ -1,5 +1,6 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +12,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModel
@@ -25,6 +29,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view
 class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +53,26 @@ class HomeFragment : Fragment() {
             cardCategory.text = it.meals[0].strCategory
             Glide.with(this).load(it.meals[0].strMealThumb).into(cardImage)
         }
-
+        val rv= view.findViewById<RecyclerView>(R.id.home_recycle_view)
+        var randomChar= getRandomLetter()
+        viewModel.searchByFirstLetter(randomChar.toString())
+        viewModel.searchedMeal.observe(viewLifecycleOwner) {
+                searchResult ->
+            val data = searchResult?.meals ?: emptyList()
+            var recipe = data.map { Recipe(1, it, true) }
+            if (recipe.isEmpty()) {
+                recipe = emptyList()
+            }
+            val adapter= MyAdapter(recipe, requireContext(), object : MyAdapter.OnRecipeItemClickListener {
+                override fun onClick(position: Int, recipe: Recipe) {
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                    findNavController().navigate(action)
+                }
+            })
+            rv.layoutManager = LinearLayoutManager(requireContext())
+            rv.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
         mainCard.setOnClickListener{
             viewModel.randomMeal.value?.meals?.get(0)?.let {
                 val recipe = Recipe(1, it, isFavourite)
@@ -75,5 +99,8 @@ class HomeFragment : Fragment() {
             }
 
         }
+    }
+    fun getRandomLetter(): Char {
+        return ('a'..'z').random()
     }
 }
