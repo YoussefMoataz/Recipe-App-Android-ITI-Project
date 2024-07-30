@@ -5,13 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".recipe.favourite.view.FavouritesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/favourites_fragment_text"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favourites_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/favourites_screen"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+        tools:listitem="@layout/card_row"/>
 </FrameLayout>

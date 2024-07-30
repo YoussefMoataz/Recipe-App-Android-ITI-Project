@@ -26,7 +26,11 @@
         android:id="@+id/favouritesFragment"
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.view.FavouritesFragment"
         android:label="Favourites"
-        tools:layout="@layout/fragment_favourites" />
+        tools:layout="@layout/fragment_favourites" >
+        <action
+            android:id="@+id/action_favouritesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.presentation.views.DetailsFragment"

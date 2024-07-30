@@ -100,11 +100,11 @@ class HomeFragment : Fragment() {
             if (isFavourite) {
                favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
             } else {
-                lifecycleScope.launch {
-
-                    AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(Recipe(0, 1, viewModel.randomMeal.value?.meals?.get(0), true))
-                }
-                Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
+//                lifecycleScope.launch {
+//
+//                    AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(Recipe(0, 1, viewModel.randomMeal.value?.meals?.get(0), true))
+//                }
+//                Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
 
                 favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
             }
