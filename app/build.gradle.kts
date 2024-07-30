@@ -52,17 +52,26 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.retrofit)
-    implementation(libs.gson)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // retrofit and gson
+    implementation(libs.retrofit)
+    implementation(libs.gson)
     implementation(libs.converter.gson)
+    
+    // glide
     implementation(libs.glide)
+
+    // room
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room)
-    implementation(libs.readmore.textview)
-    implementation(libs.youtube.player.core)
     ksp(libs.androidx.room.compiler)
 
+    // readmore textview
+    implementation(libs.readmore.textview)
+
+    // youtube player
+    implementation(libs.youtube.player.core)
 }
