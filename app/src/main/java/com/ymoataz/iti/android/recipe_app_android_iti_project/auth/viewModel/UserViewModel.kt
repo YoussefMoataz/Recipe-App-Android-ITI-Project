@@ -17,6 +17,10 @@ class UserViewModel(private val repo: UserRepo):ViewModel() {
     val isExistBefore: LiveData<Boolean>
         get() = _isExistBefore
 
+    private val _userIdByEmail=MutableLiveData<Int>()
+    val userIdByEmail:LiveData<Int>
+        get() = _userIdByEmail
+
     fun register(user: User){
         viewModelScope.launch {
             repo.insertUser(user)
@@ -40,4 +44,11 @@ class UserViewModel(private val repo: UserRepo):ViewModel() {
             repo.clearUsers()
         }
     }
+
+    fun getUserIdByEmail(email: String){
+        viewModelScope.launch {
+            _userIdByEmail.postValue(repo.getUserIdByEmail(email))
+        }
+    }
+
 }

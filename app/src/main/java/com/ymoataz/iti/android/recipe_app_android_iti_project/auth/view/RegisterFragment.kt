@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.User
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModelFactory
@@ -98,6 +99,10 @@ class RegisterFragment : Fragment() {
                 )
                 userViewModel.register(user)
                 Toast.makeText(activity, "Registration successful!", Toast.LENGTH_LONG).show()
+                userViewModel.getUserIdByEmail(user.email)
+                userViewModel.userIdByEmail.observe(viewLifecycleOwner){userID->
+                    context?.let { AuthHelper.saveUserDataInSP(it,userID) }
+                }
                 findNavController().navigate(R.id.action_registerFragment_to_recipeActivity)
             }
         }

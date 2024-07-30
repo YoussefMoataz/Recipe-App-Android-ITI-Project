@@ -9,4 +9,6 @@ interface LocalDataSource {
 
     suspend fun clearUsers()
 
+    suspend fun getUserIdByEmail(email: String):Int
+
 }

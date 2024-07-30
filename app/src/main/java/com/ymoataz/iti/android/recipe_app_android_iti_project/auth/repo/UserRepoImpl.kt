@@ -20,4 +20,8 @@ class UserRepoImpl(private val localDataSource: LocalDataSource): UserRepo {
     override suspend fun clearUsers() {
         localDataSource.clearUsers()
     }
+
+    override suspend fun getUserIdByEmail(email: String): Int {
+        return localDataSource.getUserIdByEmail(email)
+    }
 }
