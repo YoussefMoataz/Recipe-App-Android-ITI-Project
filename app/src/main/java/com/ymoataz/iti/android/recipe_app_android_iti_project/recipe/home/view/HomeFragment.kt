@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
             cardCategory.text = it.meals[0].strCategory
             Glide.with(this).load(it.meals[0].strMealThumb).into(cardImage)
         }
+
         mainCard.setOnClickListener{
             viewModel.randomMeal.value?.meals?.get(0)?.let {
                 val recipe = Recipe(1, it, isFavourite)
@@ -58,9 +59,6 @@ class HomeFragment : Fragment() {
         return view
     }
     private fun gettingViewModelReady(){
-
-
-
         val ProductsViewModelFactory=HomeViewModelFactory(
             repository = HomeRepositoryImp(
                 remoteDataSource = APIClient

@@ -11,4 +11,8 @@ object APIClient:RemoteDataSource {
         return RetrofitHelper.apiService.search(mealName)
     }
 
+    override suspend fun searchByFirstLetter(letter: String): MyResponse {
+        return RetrofitHelper.apiService.searchByFirstLetter(letter)
+    }
+
 }

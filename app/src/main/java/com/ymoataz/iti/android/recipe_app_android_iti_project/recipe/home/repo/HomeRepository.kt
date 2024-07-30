@@ -4,4 +4,5 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto
 
 interface HomeRepository {
     suspend fun getRandomMeal(): MyResponse
+    suspend fun searchByFirstLetter(letter: String): MyResponse
 }

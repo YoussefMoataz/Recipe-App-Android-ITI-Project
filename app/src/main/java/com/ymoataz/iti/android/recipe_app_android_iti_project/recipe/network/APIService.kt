@@ -10,4 +10,7 @@ interface APIService {
 
     @GET("api/json/v1/1/search.php")
     suspend fun search(@Query("s") mealName: String): MyResponse
+
+    @GET("api/json/v1/1/search.php")
+    suspend fun searchByFirstLetter(@Query("f") letter: String): MyResponse
 }
