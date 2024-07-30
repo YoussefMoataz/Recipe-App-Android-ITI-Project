@@ -31,7 +31,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.API
 import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
     private lateinit var viewModel: HomeViewModel
 
     @SuppressLint("NotifyDataSetChanged")
@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
                     val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
                     findNavController().navigate(action)
                 }
-            })
+            }, this)
             rv.layoutManager = LinearLayoutManager(requireContext())
             rv.adapter = adapter
             adapter.notifyDataSetChanged()
@@ -113,5 +113,17 @@ class HomeFragment : Fragment() {
     }
     fun getRandomLetter(): Char {
         return ('a'..'z').random()
+    }
+
+    override fun onClick(isFavourite: Boolean, recipe: Recipe) {
+        if (isFavourite){
+            lifecycleScope.launch {
+                AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipe(recipe)
+            }
+        }else{
+            lifecycleScope.launch {
+                AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
+            }
+        }
     }
 }

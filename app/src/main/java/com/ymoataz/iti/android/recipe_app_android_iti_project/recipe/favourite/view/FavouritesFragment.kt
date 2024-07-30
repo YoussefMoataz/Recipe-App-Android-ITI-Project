@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,9 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.v
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragmentDirections
 
 
-class FavouritesFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
+class FavouritesFragment : Fragment(),
+    MyAdapter.OnRecipeItemClickListener,
+    MyAdapter.OnFavouriteIconClickListener {
 
     private lateinit var favouriteViewModel: FavouriteViewModel
 
@@ -45,9 +48,12 @@ class FavouritesFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
 
         favouritesRecyclerView.layoutManager = LinearLayoutManager(view.context)
 
+        val favouriteAdapter = MyAdapter(emptyList(), view.context, this, this)
+        favouritesRecyclerView.adapter = favouriteAdapter
+
         favouriteViewModel.favouriteRecipes.observe(viewLifecycleOwner){ recipe ->
             recipe?.let {
-                favouritesRecyclerView.adapter = MyAdapter(it, view.context, this)
+                favouriteAdapter.updateData(it)
             }
         }
 
@@ -58,4 +64,12 @@ class FavouritesFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
     }
+
+    override fun onClick(isFavourite: Boolean, recipe: Recipe) {
+        if (isFavourite){
+            favouriteViewModel.deleteRecipe(recipe)
+            favouriteViewModel.getAllRecipes(1)
+        }
+    }
+
 }
