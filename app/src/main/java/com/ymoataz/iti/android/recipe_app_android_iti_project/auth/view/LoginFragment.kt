@@ -79,6 +79,7 @@ class LoginFragment : Fragment() {
                     context?.let { AuthHelper.saveUserDataInSP(it,userID) }
                 }
                 findNavController().navigate(R.id.action_loginFragment_to_recipeActivity)
+                activity?.finish()
             } else {
                 Log.d("asd->>", "Faileddd!!")
                 Toast.makeText(activity,"Wrong email or password!",Toast.LENGTH_LONG).show()
