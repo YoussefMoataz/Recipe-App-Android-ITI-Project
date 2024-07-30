@@ -9,7 +9,7 @@ import androidx.room.Query
 interface RecipeLocalDataSource {
     suspend fun insertRecipe(recipe: Recipe)
 
-    fun getAllRecipes(userId: Int): LiveData<List<Recipe>>
+    suspend fun getAllRecipes(userId: Int): List<Recipe>
 
     suspend fun deleteRecipe(recipe: Recipe)
 }

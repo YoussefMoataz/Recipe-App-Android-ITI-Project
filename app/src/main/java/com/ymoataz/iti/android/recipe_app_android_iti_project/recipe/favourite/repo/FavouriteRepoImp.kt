@@ -9,7 +9,7 @@ class FavouriteRepoImp(private val recipeLocalDataSource: RecipeLocalDataSource)
         recipeLocalDataSource.insertRecipe(recipe)
     }
 
-    override fun getAllRecipes(userId: Int): LiveData<List<Recipe>> {
+    override suspend fun getAllRecipes(userId: Int): List<Recipe> {
        return recipeLocalDataSource.getAllRecipes(userId)
     }
 

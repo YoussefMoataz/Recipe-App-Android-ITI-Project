@@ -9,18 +9,26 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.RecipeLocalDataSourceImp
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.repo.FavouriteRepoImp
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.viewModel.FavouriteViewModel
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.viewModel.FavouriteViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -56,7 +64,7 @@ class HomeFragment : Fragment() {
         viewModel.searchedMeal.observe(viewLifecycleOwner) {
                 searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(0, 1, it, true) }
+            var recipe = data.map { Recipe(0, 1, it, false) }
             if (recipe.isEmpty()) {
                 recipe = emptyList()
             }
@@ -90,8 +98,14 @@ class HomeFragment : Fragment() {
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
         run {
             if (isFavourite) {
-                favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+               favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
             } else {
+                lifecycleScope.launch {
+
+                    AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(Recipe(0, 1, viewModel.randomMeal.value?.meals?.get(0), true))
+                }
+                Toast.makeText(requireContext(), "Added", Toast.LENGTH_SHORT).show()
+
                 favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
             }
 

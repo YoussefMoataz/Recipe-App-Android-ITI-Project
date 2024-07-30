@@ -14,7 +14,7 @@ interface RecipeDao {
     suspend fun insertRecipe(recipe: Recipe)
 
     @Query("select * from Recipe where userid = :userId")
-    fun getAllRecipes(userId: Int):LiveData<List<Recipe>>
+    suspend fun getAllRecipes(userId: Int):List<Recipe>
 
     @Delete
     suspend fun deleteRecipe(recipe: Recipe)

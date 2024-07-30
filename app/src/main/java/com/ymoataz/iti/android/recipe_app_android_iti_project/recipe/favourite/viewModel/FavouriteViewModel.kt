@@ -23,7 +23,7 @@ class FavouriteViewModel (private val favouriteRepo: FavouriteRepo): ViewModel()
     fun getAllRecipes(userId: Int)
     {
         viewModelScope.launch {
-            _favouriteRecipes.postValue(favouriteRepo.getAllRecipes(userId).value)
+            _favouriteRecipes.postValue(favouriteRepo.getAllRecipes(userId))
         }
     }
 

@@ -41,7 +41,7 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         rv.layoutManager = LinearLayoutManager(view.context)
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(0, 1, it, true) }
+            var recipe = data.map { Recipe(0, 1, it, false) }
 
             if (searchView.query.isEmpty() || recipe.isEmpty()) {
                 if(recipe.isEmpty())

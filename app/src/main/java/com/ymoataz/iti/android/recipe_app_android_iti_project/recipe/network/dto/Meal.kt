@@ -1,9 +1,11 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto
 
 import android.os.Parcelable
+import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity
 data class Meal(
     val idMeal: String?,
     val strMeal: String?,
