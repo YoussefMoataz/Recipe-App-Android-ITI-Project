@@ -12,19 +12,23 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.repo.SearchRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.viewModel.SearchViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.viewModel.SearchViewModelFactory
+import kotlinx.coroutines.launch
 
 
-class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
+class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
+    MyAdapter.OnFavouriteIconClickListener {
     private lateinit var viewModel : SearchViewModel
 
     override fun onCreateView(
@@ -41,7 +45,7 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         rv.layoutManager = LinearLayoutManager(view.context)
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(0, 1, it, true) }
+            var recipe = data.map { Recipe(0, 1, it, false) }
 
             if (searchView.query.isEmpty() || recipe.isEmpty()) {
                 if(recipe.isEmpty())
@@ -53,12 +57,12 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
                     val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(recipe)
                     findNavController().navigate(action)
                 }
-            })
+            }, this)
             if(recipe.isNotEmpty())
                 notFoundTextView.visibility = View.GONE
 
 
-            rv.adapter = MyAdapter(recipe, view.context, this)
+            rv.adapter = MyAdapter(recipe, view.context, this, this)
 
         }
         focusAndOpenKeyboard(searchView)
@@ -92,6 +96,18 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
             inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
 
         }, 200)
+    }
+
+    override fun onClick(isFavourite: Boolean, recipe: Recipe) {
+        if (isFavourite){
+            lifecycleScope.launch {
+                AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipe(recipe)
+            }
+        }else{
+            lifecycleScope.launch {
+                AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
+            }
+        }
     }
 
 }

@@ -8,7 +8,7 @@ class RecipeLocalDataSourceImp(private val recipeDao: RecipeDao) : RecipeLocalDa
         recipeDao.insertRecipe(recipe)
     }
 
-    override fun getAllRecipes(userId: Int): LiveData<List<Recipe>>
+    override suspend fun getAllRecipes(userId: Int): List<Recipe>
     {
         return recipeDao.getAllRecipes(userId)
     }
