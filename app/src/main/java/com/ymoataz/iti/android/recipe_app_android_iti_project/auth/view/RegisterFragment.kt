@@ -11,18 +11,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
-import com.ymoataz.iti.android.recipe_app_android_iti_project.database.User
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepoImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.viewModel.UserViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
-import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.repo.UserRepoImpl
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.User
 import java.util.regex.Pattern
 
 
@@ -60,10 +61,8 @@ class RegisterFragment : Fragment() {
 
         regBtn.setOnClickListener {
             var allFieldsFilled = true
-
+            var isValidPass=isPasswordValid(password.text.toString())
             var isEmailValid=isEmailValid(email.text.toString())
-            if (!isEmailValid)
-                Toast.makeText(activity, "This is not a valid email!", Toast.LENGTH_LONG).show()
 
             if (fname.text.toString().isEmpty()) {
                 setBorder(fname, R.color.red)
@@ -81,11 +80,28 @@ class RegisterFragment : Fragment() {
                 setBorder(password, R.color.red)
                 allFieldsFilled = false
             }
-            if (allFieldsFilled) {
-                userViewModel.checkIfEmailExistBefore(email.text.toString())
-            }
-            else
+
+            if (!allFieldsFilled) {
                 Toast.makeText(activity, "Please fill all the required information!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if (!isEmailValid){
+                Toast.makeText(activity, "This is not a valid email!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if(!isValidPass){
+               /* Toast.makeText(activity,
+                    "Contain at least one digit.\n" +
+                            "Contain at least one lowercase letter.\n" +
+                            "Contain at least one uppercase letter.\n" +
+                            "Contain at least one special character from the specified set.\n" +
+                            "Have no whitespace characters.\n" +
+                            "Be at least 4 characters long.!",
+                    Toast.LENGTH_LONG).show()*/
+                showPasswordCriteriaDialog()
+                return@setOnClickListener
+            }
+            userViewModel.checkIfEmailExistBefore(email.text.toString())
         }
         userViewModel.isExistBefore.observe(viewLifecycleOwner) { isEmailExist ->
             if (isEmailExist) {
@@ -136,6 +152,36 @@ class RegisterFragment : Fragment() {
             setStroke(3, ContextCompat.getColor(requireContext(), color))
         }
         editText.background = drawable
+    }
+    fun isPasswordValid(password: String): Boolean {
+        val pattern: Pattern
+
+        val regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
+
+        pattern = Pattern.compile(regex)
+        val matcher = pattern.matcher(password)
+
+        return matcher.matches()
+    }
+    private fun showPasswordCriteriaDialog() {
+        val passwordCriteria = """
+            Password must:
+            - Contain at least one digit.
+            - Contain at least one lowercase letter.
+            - Contain at least one uppercase letter.
+            - Contain at least one special character from @#$%^&+=.
+            - Have no whitespace characters.
+            - Be at least 4 characters long.
+        """.trimIndent()
+
+        val dialog = activity?.let { AlertDialog.Builder(it).create() }
+        if (dialog != null) {
+            dialog.setMessage(passwordCriteria)
+            dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialogInterface, _ ->
+                dialogInterface.dismiss()}
+            dialog.show()
+        }
+
     }
 
 }
