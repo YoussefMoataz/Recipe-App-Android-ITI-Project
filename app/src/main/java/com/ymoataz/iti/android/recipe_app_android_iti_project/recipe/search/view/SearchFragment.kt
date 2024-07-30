@@ -17,8 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.MyAdapter
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.Recipe
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view.HomeFragmentDirections
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.repo.SearchRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.viewModel.SearchViewModel
@@ -42,7 +41,7 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         rv.layoutManager = LinearLayoutManager(view.context)
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
-            var recipe = data.map { Recipe(1, it, true) }
+            var recipe = data.map { Recipe(0, 1, it, true) }
 
             if (searchView.query.isEmpty() || recipe.isEmpty()) {
                 if(recipe.isEmpty())

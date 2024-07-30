@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide import com.ymoataz.iti.android.recipe_app_android_iti_project.R
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Meal
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe
 
 class MyAdapter(private val data :List<Recipe>, private val context: Context, private val onRecipeItemClickListener: OnRecipeItemClickListener): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
 

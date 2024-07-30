@@ -1,4 +1,4 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments
+package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,14 +17,6 @@ class FavouritesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favourites, container, false)
 
-//        val homeScreenText=view.findViewById<TextView>(R.id.home_fragment_text)
-//        val searchScreenText=view.findViewById<TextView>(R.id.search_fragment_text)
-//        homeScreenText.setOnClickListener {
-//            findNavController().navigate(R.id.action_favouritesFragment_to_homeFragment)
-//        }
-//        searchScreenText.setOnClickListener {
-//            findNavController().navigate(R.id.action_favouritesFragment_to_searchFragment)
-//        }
         return view
     }
 
