@@ -29,6 +29,7 @@
         android:layout_marginTop="64dp"
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/e_mail"
         android:inputType="text"
@@ -53,6 +54,7 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/ic_password"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -67,12 +69,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:background="@drawable/btn_bg"
+        android:backgroundTint="@color/white"
         android:text="@string/login"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
@@ -91,13 +94,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="106dp"
         android:text="@string/register"
         android:textSize="16sp"
+        android:background="@drawable/btn_bg"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btnLogin"
         app:layout_constraintHorizontal_bias="0.0"
