@@ -1,11 +1,16 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +33,10 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
+        val notFoundTextView = view.findViewById<TextView>(R.id.notFoundTextView)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
-        val searchViewModelFactory = SearchViewModelFactory(SearchRepositoryImp(APIClient))
 
+        val searchViewModelFactory = SearchViewModelFactory(SearchRepositoryImp(APIClient))
         viewModel = ViewModelProvider(this, searchViewModelFactory)[SearchViewModel::class.java]
         val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
         rv.layoutManager = LinearLayoutManager(view.context)
@@ -40,6 +45,8 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
             var recipe = data.map { Recipe(1, it, true) }
 
             if (searchView.query.isEmpty() || recipe.isEmpty()) {
+                if(recipe.isEmpty())
+                    notFoundTextView.visibility = View.VISIBLE
                 recipe = emptyList()
             }
             rv.adapter = MyAdapter(recipe, view.context,object : MyAdapter.OnRecipeItemClickListener {
@@ -48,8 +55,15 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
                     findNavController().navigate(action)
                 }
             })
+            if(recipe.isNotEmpty())
+                notFoundTextView.visibility = View.GONE
+
+
+            rv.adapter = MyAdapter(recipe, view.context, this)
 
         }
+        focusAndOpenKeyboard(searchView)
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -70,4 +84,15 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
     }
+
+
+    private fun focusAndOpenKeyboard(searchView: SearchView) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            searchView.requestFocus()
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
+
+        }, 200)
+    }
+
 }

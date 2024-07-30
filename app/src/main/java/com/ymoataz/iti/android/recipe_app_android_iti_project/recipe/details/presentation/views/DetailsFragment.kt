@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.colormoon.readmoretextview.ReadMoreTextView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -31,6 +32,8 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_details, container, false)
+
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
 
         val nameTextView = view.findViewById<TextView>(R.id.recipe_name_text_view)
         val areaTextView = view.findViewById<TextView>(R.id.recipe_area_text_view)
@@ -96,6 +99,7 @@ class DetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         youTubePlayerView.release();
     }
 }
