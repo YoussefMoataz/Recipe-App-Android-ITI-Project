@@ -117,7 +117,11 @@ class HomeFragment : Fragment(), MyAdapter.OnFavouriteIconClickListener {
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         if (isFavourite){
             lifecycleScope.launch {
-                AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipe(recipe)
+                recipe.meal?.let {
+                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(
+                        it
+                    )
+                }
             }
         } else {
             lifecycleScope.launch {

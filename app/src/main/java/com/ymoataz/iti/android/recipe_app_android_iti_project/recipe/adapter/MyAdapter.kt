@@ -1,6 +1,7 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,12 +52,12 @@ class MyAdapter(
             .load(recipe.meal?.strMealThumb)
             .into(holder.image)
 
-        updateFavoriteIcon(holder.favouriteIcon, recipe?.favourite!!)
+        updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)
 
         holder.favouriteIcon.setOnClickListener {
             onFavouriteIconClickListener.onClick(recipe.favourite!!, recipe)
             recipe.favourite = !recipe.favourite!!
-            updateFavoriteIcon(holder.favouriteIcon, recipe?.favourite!!)
+            updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)
         }
 
     }
@@ -64,9 +65,11 @@ class MyAdapter(
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
         run {
             if (isFavourite) {
-                favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
-            } else {
                 favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+
+            } else {
+                favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
+
             }
 
         }
