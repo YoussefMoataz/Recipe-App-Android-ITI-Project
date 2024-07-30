@@ -17,4 +17,14 @@ object AuthHelper {
         editor.putBoolean(IS_LOGGED_IN,true)
         editor.commit()
     }
+
+    fun getUserID(context: Context): Int?{
+        val sharedPreferences=context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.getInt(USER_ID, -1).also {
+            if (it == -1){
+                return null
+            }
+            return it
+        }
+    }
 }
