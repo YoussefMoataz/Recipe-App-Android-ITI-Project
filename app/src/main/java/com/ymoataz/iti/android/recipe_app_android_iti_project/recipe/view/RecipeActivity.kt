@@ -5,10 +5,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.NavDeepLinkBuilder
-import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -16,7 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity
-import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivityDirections
 
 class RecipeActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
@@ -38,7 +35,8 @@ class RecipeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
@@ -62,10 +60,12 @@ class RecipeActivity : AppCompatActivity() {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.GONE
                 }
+
                 R.id.detailsFragment -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.VISIBLE
                 }
+
                 else -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                     bottomNavigationView.visibility = BottomNavigationView.VISIBLE
@@ -85,6 +85,7 @@ class RecipeActivity : AppCompatActivity() {
                 navController.navigate(R.id.action_global_aboutFragment)
                 true
             }
+
             R.id.action_sign_out -> {
                 AuthHelper.logout(this)
                 NavDeepLinkBuilder(this)
@@ -95,6 +96,7 @@ class RecipeActivity : AppCompatActivity() {
                 finish()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
