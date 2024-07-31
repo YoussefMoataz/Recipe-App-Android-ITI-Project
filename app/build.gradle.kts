@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.converter.gson)
-    
+
     // glide
     implementation(libs.glide)
 
@@ -75,6 +75,6 @@ dependencies {
     // youtube player
     implementation(libs.youtube.player.core)
 
-    //lottie
+    // lottie
     implementation(libs.lottie.dep)
 }
