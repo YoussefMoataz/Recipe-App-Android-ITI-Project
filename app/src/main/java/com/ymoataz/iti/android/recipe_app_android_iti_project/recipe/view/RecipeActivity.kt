@@ -87,13 +87,11 @@ class RecipeActivity : AppCompatActivity() {
             }
             R.id.action_sign_out -> {
                 AuthHelper.logout(this)
-//                navController.navigate(R.id.action_global_authActivity)
                 NavDeepLinkBuilder(this)
                     .setGraph(R.navigation.auth_navigation)
                     .setDestination(R.id.loginFragment)
                     .setComponentName(AuthActivity::class.java)
                     .createPendingIntent().send()
-//                navController.navigate(request)
                 finish()
                 true
             }
