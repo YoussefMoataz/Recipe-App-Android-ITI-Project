@@ -45,4 +45,7 @@
             android:id="@+id/action_splashFragment_to_recipeActivity"
             app:destination="@id/recipeActivity" />
     </fragment>
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment" />
 </navigation>
