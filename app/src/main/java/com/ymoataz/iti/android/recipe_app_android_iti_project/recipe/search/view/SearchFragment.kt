@@ -31,7 +31,9 @@ import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     MyAdapter.OnFavouriteIconClickListener {
-    private lateinit var viewModel : SearchViewModel
+
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var adapter: MyAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,63 +42,50 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         val notFoundTextView = view.findViewById<TextView>(R.id.notFoundTextView)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
+        val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
 
         val searchViewModelFactory = SearchViewModelFactory(SearchRepositoryImp(APIClient))
         viewModel = ViewModelProvider(this, searchViewModelFactory)[SearchViewModel::class.java]
-        val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
+
         rv.layoutManager = LinearLayoutManager(view.context)
+        adapter = MyAdapter(emptyList(), view.context, this, this)
+        rv.adapter = adapter
 
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
             lifecycleScope.launch {
-                val recipes = AuthHelper.getUserID(requireContext())?.let { it1 ->
-                    AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it1)
+                val recipes = AuthHelper.getUserID(requireContext())?.let {
+                    AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it)
                 }
 
-                var recipe = data.map { meal ->
-                    val isFavourite = recipes?.any { recipe -> recipe.meal?.idMeal == meal.idMeal }
-                    Recipe(
-                        0,
-                        AuthHelper.getUserID(requireContext()),
-                        meal,
-                        isFavourite
-                    )
+                var recipeList = data.map { meal ->
+                    val isFavourite = recipes?.any { recipe -> recipe.meal?.idMeal == meal.idMeal } ?: false
+                    Recipe(0, AuthHelper.getUserID(requireContext()), meal, isFavourite)
                 }
 
-                if (searchView.query.isEmpty() || recipe.isEmpty()) {
-                    if (recipe.isEmpty())
+                if (searchView.query.isEmpty() || recipeList.isEmpty()) {
+                    if (recipeList.isEmpty()) {
                         notFoundTextView.visibility = View.VISIBLE
-                    recipe = emptyList()
+                    }
+                    recipeList = emptyList()
+                } else {
+                    notFoundTextView.visibility = View.GONE
                 }
 
-                rv.adapter =
-                    MyAdapter(recipe, view.context, object : MyAdapter.OnRecipeItemClickListener {
-                        override fun onClick(position: Int, recipe: Recipe) {
-                            val action =
-                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
-                                    recipe
-                                )
-                            findNavController().navigate(action)
-                        }
-                    }, this@SearchFragment)
-                if (recipe.isNotEmpty())
-                    notFoundTextView.visibility = View.GONE
-
-
-                rv.adapter = MyAdapter(recipe, view.context, this@SearchFragment, this@SearchFragment)
-
+                adapter.updateData(recipeList)
             }
         }
+
         focusAndOpenKeyboard(searchView)
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
-                    viewModel.search(newText)
+                    viewModel.search(it)
                 }
                 return true
             }
@@ -110,32 +99,23 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         findNavController().navigate(action)
     }
 
-
     private fun focusAndOpenKeyboard(searchView: SearchView) {
         Handler(Looper.getMainLooper()).postDelayed({
             searchView.requestFocus()
             val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT)
-
         }, 200)
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
-        if (isFavourite){
-            lifecycleScope.launch {
+        lifecycleScope.launch {
+            if (isFavourite) {
                 recipe.meal?.let {
-                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(
-                        it
-                    )
+                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(it)
                 }
-            }
-        }
-        else
-        {
-            lifecycleScope.launch {
+            } else {
                 AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
             }
         }
     }
-
 }

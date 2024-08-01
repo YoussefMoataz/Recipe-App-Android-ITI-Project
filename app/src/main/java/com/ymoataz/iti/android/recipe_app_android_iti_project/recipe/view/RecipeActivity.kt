@@ -3,6 +3,7 @@ package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -14,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity
+
 
 class RecipeActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
@@ -87,13 +89,24 @@ class RecipeActivity : AppCompatActivity() {
             }
 
             R.id.action_sign_out -> {
-                AuthHelper.logout(this)
-                NavDeepLinkBuilder(this)
-                    .setGraph(R.navigation.auth_navigation)
-                    .setDestination(R.id.loginFragment)
-                    .setComponentName(AuthActivity::class.java)
-                    .createPendingIntent().send()
-                finish()
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Are you sure you want to sign out?")
+                    .setCancelable(false)
+                    .setPositiveButton(
+                        "Yes"
+                    ) { dialog, _ ->
+                        AuthHelper.logout(this)
+                        NavDeepLinkBuilder(this)
+                            .setGraph(R.navigation.auth_navigation)
+                            .setDestination(R.id.loginFragment)
+                            .setComponentName(AuthActivity::class.java)
+                            .createPendingIntent().send()
+                        finish() }
+                    .setNegativeButton(
+                        "No"
+                    ) { dialog, _ -> dialog.cancel() }
+                val alert = builder.create()
+                alert.show()
                 true
             }
 
