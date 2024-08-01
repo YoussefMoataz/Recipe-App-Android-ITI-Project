@@ -17,6 +17,9 @@ class FavouriteViewModel (private val favouriteRepo: FavouriteRepo): ViewModel()
      {
          viewModelScope.launch {
              favouriteRepo.insertRecipe(recipe)
+             recipe.userid?.let {
+                 getAllRecipes(it)
+             }
          }
      }
 

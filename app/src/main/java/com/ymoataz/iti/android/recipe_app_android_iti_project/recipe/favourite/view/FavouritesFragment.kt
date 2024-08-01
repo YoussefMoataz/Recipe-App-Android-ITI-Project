@@ -7,8 +7,10 @@ import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
@@ -51,11 +53,41 @@ class FavouritesFragment : Fragment(),
         val favouriteAdapter = MyAdapter(emptyList(), view.context, this, this)
         favouritesRecyclerView.adapter = favouriteAdapter
 
-        favouriteViewModel.favouriteRecipes.observe(viewLifecycleOwner){ recipe ->
+        favouriteViewModel.favouriteRecipes.observe(viewLifecycleOwner) { recipe ->
             recipe?.let {
                 favouriteAdapter.updateData(it)
             }
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val recipeToBeDeleted =
+                    favouriteViewModel.favouriteRecipes.value?.get(viewHolder.adapterPosition)
+
+                recipeToBeDeleted?.let { recipe ->
+                    favouriteViewModel.deleteRecipe(recipe)
+
+                    Snackbar.make(
+                        favouritesRecyclerView,
+                        "Deleted " + recipe.meal?.strMeal,
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAction("Undo") {
+                            favouriteViewModel.insertRecipe(recipe)
+                        }
+                        .show()
+                }
+            }
+
+        }).attachToRecyclerView(favouritesRecyclerView)
 
         return view
     }
@@ -66,7 +98,7 @@ class FavouritesFragment : Fragment(),
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
-        if (isFavourite){
+        if (isFavourite) {
             favouriteViewModel.deleteRecipe(recipe)
 //            AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
         }
