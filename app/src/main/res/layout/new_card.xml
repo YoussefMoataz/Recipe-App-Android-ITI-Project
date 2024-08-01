@@ -96,7 +96,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/circular_background"
                     android:contentDescription="@string/favourites"
-                    android:backgroundTint="@color/lavender"
+                    android:backgroundTint="@color/gray"
                     android:src="@drawable/baseline_favorite_border_24"
                     app:tint="@color/red" />
             </LinearLayout>

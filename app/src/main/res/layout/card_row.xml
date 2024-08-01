@@ -36,7 +36,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/circular_background"
-            android:backgroundTint="@color/lavender"
+            android:backgroundTint="@color/gray"
             android:contentDescription="@string/favourites"
             android:src="@drawable/baseline_favorite_border_24"
             app:layout_constraintEnd_toEndOf="parent"
