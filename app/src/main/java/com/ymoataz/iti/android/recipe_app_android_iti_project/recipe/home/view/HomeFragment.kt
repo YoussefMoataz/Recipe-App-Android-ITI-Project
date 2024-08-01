@@ -2,13 +2,14 @@ package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -24,7 +25,6 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.H
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragmentDirections
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
@@ -32,6 +32,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: MyAdapter
+    private lateinit var rv: RecyclerView
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -40,6 +41,9 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // Handle back press
+        handleOnBackPressed()
+
         val mainCard = view.findViewById<View>(R.id.single_card)
         val cardImage = view.findViewById<ImageView>(R.id.recipeImageView)
         val cardTitle = view.findViewById<TextView>(R.id.recipeTitleTextView)
@@ -47,9 +51,13 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
 
         // Initialize RecyclerView and Adapter
-        val rv = view.findViewById<RecyclerView>(R.id.home_recycle_view)
+        rv = view.findViewById(R.id.home_recycle_view)
         rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rv.adapter = MyAdapter(emptyList(), view.context, this, this)
+        rv.setHasFixedSize(true)
+        adapter = rv.adapter as MyAdapter
 
+        rv.adapter = adapter
         gettingViewModelReady()
         viewModel.getRandomMeal()
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
@@ -101,8 +109,12 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
                     Recipe(0, userId, meal, isFavourite)
                 }
 
-                rv.adapter = MyAdapter(recipeList, view.context, this@HomeFragment, this@HomeFragment)
-                rv.adapter?.notifyDataSetChanged()
+                if (recipeList.isEmpty()) {
+                    refreshScreen()
+                } else {
+                    adapter.updateData(recipeList)
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
 
@@ -114,6 +126,12 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
             }
         }
         return view
+    }
+
+    private fun refreshScreen() {
+        // Perform the refresh action, such as reloading data or showing a message
+        val randomChar = getRandomLetter()
+        viewModel.searchByFirstLetter(randomChar.toString())
     }
 
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
@@ -153,5 +171,16 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     override fun onClick(position: Int, recipe: Recipe) {
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
+    }
+
+    private fun handleOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Custom back press logic if needed
+                // For now, just call the default back press handling
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        })
     }
 }
