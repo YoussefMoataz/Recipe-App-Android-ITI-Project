@@ -143,7 +143,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
                 AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(recipe.meal!!)
             } else {
                 AuthHelper.getUserID(requireContext())?.let { userId ->
-                    val newRecipe = recipe.copy( userId, favourite = true)
+                    val newRecipe = recipe.copy(favourite = true)
                     AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(newRecipe)
                 }
             }
