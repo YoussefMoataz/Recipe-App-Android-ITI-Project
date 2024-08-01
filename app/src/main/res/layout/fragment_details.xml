@@ -60,10 +60,11 @@
 
         <TextView
             android:id="@+id/recipe_name_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="30sp"
+            android:gravity="center"
             app:layout_constraintEnd_toStartOf="@+id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/recipe_image_card_view"
@@ -119,18 +120,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/recipe_instructions_title_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/instructions_title"
+                    android:textStyle="bold"
                     android:textSize="18sp" />
 
                 <com.colormoon.readmoretextview.ReadMoreTextView
                     android:id="@+id/recipe_instructions_text_view"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:textSize="20sp"
@@ -143,7 +145,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:text="@string/ingredients_title"
+            android:textStyle="bold"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/recipe_instructions_card_view" />

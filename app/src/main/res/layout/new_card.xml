@@ -18,8 +18,8 @@
         <!-- Recipe Image with rounded corners -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/recipeImageView"
-            android:layout_width="130dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/recipe_image"
