@@ -31,6 +31,9 @@ class FavouriteViewModel (private val favouriteRepo: FavouriteRepo): ViewModel()
      {
          viewModelScope.launch {
              favouriteRepo.deleteRecipe(recipe)
+             recipe.userid?.let {
+                 getAllRecipes(it)
+             }
          }
      }
 

@@ -23,10 +23,10 @@ class AboutFragment : Fragment() {
         val rv= view.findViewById<RecyclerView>(R.id.recyclerViewAbout)
         rv.layoutManager = LinearLayoutManager(this.context)
         val personList = listOf(
-            Person(R.drawable.youssef, "Youssef Moataz", "https://github.com/YoussefMoataz"),
-            Person(R.drawable.person1, "Ahmed Salah", "https://github.com/ahmed-sala"),
-            Person(R.drawable.bassel, "Bassel Islam", "https://github.com/bassel-islam"),
-            Person(R.drawable.badr, "Badr Mohamed", "https://github.com/Badrmohamedragab")
+            Person(R.drawable.person_youssef, "Youssef Moataz", "https://github.com/YoussefMoataz"),
+            Person(R.drawable.person_ahmed, "Ahmed Salah", "https://github.com/ahmed-sala"),
+            Person(R.drawable.person_bassel, "Bassel Islam", "https://github.com/bassel-islam"),
+            Person(R.drawable.person_badr, "Badr Mohamed", "https://github.com/Badrmohamedragab")
         )
         rv.adapter = PersonAdapter(personList)
 
