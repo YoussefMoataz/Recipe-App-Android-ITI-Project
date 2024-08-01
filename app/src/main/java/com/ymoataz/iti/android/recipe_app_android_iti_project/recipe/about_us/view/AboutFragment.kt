@@ -1,4 +1,4 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project.about_us.view
+package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.about_us.view
 
 import Person
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
-import com.ymoataz.iti.android.recipe_app_android_iti_project.about_us.adapter.PersonAdapter
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.about_us.adapter.PersonAdapter
 
 class AboutFragment : Fragment() {
 
@@ -23,10 +23,10 @@ class AboutFragment : Fragment() {
         val rv= view.findViewById<RecyclerView>(R.id.recyclerViewAbout)
         rv.layoutManager = LinearLayoutManager(this.context)
         val personList = listOf(
-            Person(R.drawable.person1, "John Doe", "https://github.com/johndoe"),
-            Person(R.drawable.person1, "Jane Smith", "https://github.com/janesmith"),
-            Person(R.drawable.person1, "James Brown", "https://github.com/jamesbrown"),
-            Person(R.drawable.person1, "Emily Davis", "https://github.com/emilydavis")
+            Person(R.drawable.person1, "Youssef Moataz", "https://github.com/YoussefMoataz"),
+            Person(R.drawable.person1, "Ahmed Salah", "https://github.com/ahmed-sala"),
+            Person(R.drawable.person1, "Bassel Islam", "https://github.com/bassel-islam"),
+            Person(R.drawable.person1, "Badr Mohamed", "https://github.com/Badrmohamedragab")
         )
         rv.adapter = PersonAdapter(personList)
 
