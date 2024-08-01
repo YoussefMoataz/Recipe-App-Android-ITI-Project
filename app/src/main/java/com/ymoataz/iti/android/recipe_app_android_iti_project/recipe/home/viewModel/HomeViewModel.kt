@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepository
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Category
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.MyResponse
 import kotlinx.coroutines.launch
 
@@ -14,6 +15,10 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val randomMeal: LiveData<MyResponse> = _randomMeal
     private val _searchedMeal = MutableLiveData<MyResponse>()
     val searchedMeal: LiveData<MyResponse> = _searchedMeal
+    private val _categories = MutableLiveData<Category>()
+    val categories: LiveData<Category> = _categories
+    private val _mealsByCategory = MutableLiveData<MyResponse>()
+    val mealsByCategory: LiveData<MyResponse> = _mealsByCategory
     fun getRandomMeal() {
         viewModelScope.launch {
             val response = homeRepository.getRandomMeal()
@@ -24,6 +29,18 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         viewModelScope.launch {
             val response = homeRepository.searchByFirstLetter(letter)
             _searchedMeal.value = response
+        }
+    }
+    fun getCategories() {
+        viewModelScope.launch {
+            val response = homeRepository.getCategories()
+            _categories.value = response
+        }
+    }
+    fun getMealsByCategory(category: String) {
+        viewModelScope.launch {
+            val response = homeRepository.getMealsByCategory(category)
+            _mealsByCategory.value = response
         }
     }
 }
