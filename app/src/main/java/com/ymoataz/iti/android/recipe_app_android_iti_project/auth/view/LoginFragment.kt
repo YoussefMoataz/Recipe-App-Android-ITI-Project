@@ -12,9 +12,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.LocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
@@ -25,12 +28,23 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDataba
 
 class LoginFragment : Fragment() {
     private lateinit var userViewModel: UserViewModel
+    private val args: LoginFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view=inflater.inflate(R.layout.fragment_login, container, false)
+
+        if (args.isFromLogout) {
+            activity?.onBackPressedDispatcher?.addCallback(requireActivity(),
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        activity?.finish()
+                    }
+                })
+        }
+
         val userDao = AppDatabase.getDatabase(requireContext()).userDao()
         val localDataSource = LocalDataSourceImpl(userDao)
         val userRepository = UserRepoImpl(localDataSource)
