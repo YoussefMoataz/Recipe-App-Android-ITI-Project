@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_loginFragment_to_recipeActivity"
             app:destination="@id/recipeActivity" />
+        <argument
+            android:name="isFromLogout"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"

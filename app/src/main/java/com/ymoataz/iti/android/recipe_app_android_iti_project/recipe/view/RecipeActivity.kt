@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.NavDeepLinkBuilder
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -96,12 +97,16 @@ class RecipeActivity : AppCompatActivity() {
                         "Yes"
                     ) { dialog, _ ->
                         AuthHelper.logout(this)
+                        val bundle = Bundle()
+                        bundle.putBoolean("isFromLogout", true)
                         NavDeepLinkBuilder(this)
                             .setGraph(R.navigation.auth_navigation)
                             .setDestination(R.id.loginFragment)
                             .setComponentName(AuthActivity::class.java)
+                            .setArguments(bundle)
                             .createPendingIntent().send()
-                        finish() }
+                        finish()
+                    }
                     .setNegativeButton(
                         "No"
                     ) { dialog, _ -> dialog.cancel() }
