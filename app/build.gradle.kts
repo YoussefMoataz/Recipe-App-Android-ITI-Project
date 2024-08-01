@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.ui.graphics.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,7 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.converter.gson)
-    
+
     // glide
     implementation(libs.glide)
 
@@ -75,6 +76,9 @@ dependencies {
     // youtube player
     implementation(libs.youtube.player.core)
 
-    //lottie
+    // lottie
     implementation(libs.lottie.dep)
+
+    // picasso
+    implementation(libs.picasso)
 }

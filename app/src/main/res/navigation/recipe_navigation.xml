@@ -44,11 +44,19 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.AboutFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.about_us.view.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
     <action
         android:id="@+id/action_global_aboutFragment"
         app:destination="@id/aboutFragment" />
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth"/>
+    <action
+        android:id="@+id/action_global_authActivity"
+        app:destination="@id/authActivity" />
 
 </navigation>

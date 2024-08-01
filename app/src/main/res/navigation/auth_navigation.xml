@@ -33,7 +33,7 @@
         tools:layout="@layout/activity_recipe" />
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.fragments.SplashFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -41,5 +41,11 @@
             app:destination="@id/loginFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/splashFragment"/>
+        <action
+            android:id="@+id/action_splashFragment_to_recipeActivity"
+            app:destination="@id/recipeActivity" />
     </fragment>
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment" />
 </navigation>
