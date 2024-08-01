@@ -68,7 +68,7 @@ class FavouritesFragment : Fragment(),
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         if (isFavourite){
             favouriteViewModel.deleteRecipe(recipe)
-            AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
+//            AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
         }
     }
 
