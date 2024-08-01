@@ -28,4 +28,6 @@
     <string name="about_us">About Us</string>
     <string name="sign_out">Sign Out</string>
     <string name="no_results_found">No results Found....</string>
+    <string name="github_profile">GitHub Profile</string>
+    <string name="copyRights">© 2024 ITI Recipe Project. All rights reserved.</string>
 </resources>
