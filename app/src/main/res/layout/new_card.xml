@@ -17,7 +17,7 @@
 
         <!-- Recipe Image with rounded corners -->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/recipeImage"
+            android:id="@+id/recipeImageView"
             android:layout_width="130dp"
             android:layout_height="150dp"
             android:layout_alignParentStart="true"
@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/recipeImage"
+            android:layout_toEndOf="@id/recipeImageView"
             android:orientation="vertical"
             android:padding="12dp"
             android:layout_marginStart="10dp"
@@ -46,15 +46,17 @@
                 android:maxLines="1"
                 android:text="@string/textview"
                 android:textColor="@color/black"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- Horizontal layout for category icon and text -->
+            <!-- Horizontal layout for category icon, text, and favorite icon -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+
+                >
 
                 <!-- Category Icon -->
                 <ImageButton
@@ -62,8 +64,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/circular_background"
                     android:contentDescription="@string/category_txt"
-                    android:padding="8dp"
-                    android:backgroundTint="@color/search_hint_color"
+                    android:backgroundTint="@color/lavender"
                     android:src="@drawable/baseline_category_24"
                     app:tint="@color/white" />
 
@@ -78,24 +79,27 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="italic"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp" />
+
+                <!-- Spacer to push favorite icon to the end -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Favorite Icon Button -->
+                <ImageButton
+                    android:id="@+id/favoriteIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circular_background"
+                    android:contentDescription="@string/favourites"
+                    android:backgroundTint="@color/lavender"
+                    android:src="@drawable/baseline_favorite_border_24"
+                    app:tint="@color/white" />
             </LinearLayout>
         </LinearLayout>
-
-        <!-- Favorite Icon Button -->
-        <ImageButton
-            android:id="@+id/favoriteIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/circular_background"
-            android:contentDescription="@string/favourites"
-            android:padding="4dp"
-            android:backgroundTint="@color/search_hint_color"
-            android:src="@drawable/baseline_favorite_border_24"
-            app:tint="@color/white" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

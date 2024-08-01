@@ -63,7 +63,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
             val meal = mealResponse.meals[0]
             cardTitle.text = meal.strMeal
-            cardCategory.text = meal.strCategory
+//            cardCategory.text = meal.strCategory
             Glide.with(this).load(meal.strMealThumb).into(cardImage)
 
             lifecycleScope.launch {
