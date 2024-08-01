@@ -59,23 +59,17 @@ class MyAdapter(
             recipe.favourite = !recipe.favourite!!
             updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)
         }
-
     }
 
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
-        run {
-            if (isFavourite) {
-                favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
-
-            } else {
-                favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
-
-            }
-
+        if (isFavourite) {
+            favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+        } else {
+            favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
         }
     }
 
-    fun updateData(newData: List<Recipe>){
+    fun updateData(newData: List<Recipe>) {
         data = newData
         notifyDataSetChanged()
     }
