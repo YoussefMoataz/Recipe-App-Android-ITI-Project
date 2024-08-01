@@ -98,7 +98,7 @@
                     android:contentDescription="@string/favourites"
                     android:backgroundTint="@color/lavender"
                     android:src="@drawable/baseline_favorite_border_24"
-                    app:tint="@color/white" />
+                    app:tint="@color/red" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
