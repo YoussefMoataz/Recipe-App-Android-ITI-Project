@@ -1,7 +1,9 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project.about_us.adapter
+package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.about_us.adapter
 
 import CircleTransform
 import Person
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +18,8 @@ class PersonAdapter(private val personList: List<Person>) : RecyclerView.Adapter
     inner class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
         val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        val githubTextView: TextView = itemView.findViewById(R.id.githubTextView)
+//        val githubTextView: TextView = itemView.findViewById(R.id.githubTextView)
+        val githubIcon: ImageView = itemView.findViewById(R.id.githubIcon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
@@ -27,10 +30,15 @@ class PersonAdapter(private val personList: List<Person>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
         val person = personList[position]
         holder.nameTextView.text = person.name
-        holder.githubTextView.text = person.githubUrl
+//        holder.githubTextView.text = person.githubUrl
 
-        // Load circular image with Picasso
         Picasso.get().load(person.imageResId).resize(80, 80).transform(CircleTransform()).into(holder.imageView)
+
+        // Set up click listener for GitHub icon
+        holder.githubIcon.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(person.githubUrl))
+            holder.itemView.context.startActivity(intent)
+        }
 
         // Animate the card
         holder.itemView.alpha = 0f
@@ -40,4 +48,3 @@ class PersonAdapter(private val personList: List<Person>) : RecyclerView.Adapter
 
     override fun getItemCount() = personList.size
 }
-

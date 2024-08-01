@@ -41,8 +41,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Handle back press
-        handleOnBackPressed()
+
 
         val mainCard = view.findViewById<View>(R.id.single_card)
         val cardImage = view.findViewById<ImageView>(R.id.recipeImageView)
@@ -50,7 +49,6 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         val cardCategory = view.findViewById<TextView>(R.id.recipeCategoryTextView)
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
 
-        // Initialize RecyclerView and Adapter
         rv = view.findViewById(R.id.home_recycle_view)
         rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv.adapter = MyAdapter(emptyList(), view.context, this, this)
@@ -129,7 +127,6 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     }
 
     private fun refreshScreen() {
-        // Perform the refresh action, such as reloading data or showing a message
         val randomChar = getRandomLetter()
         viewModel.searchByFirstLetter(randomChar.toString())
     }
@@ -173,14 +170,5 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         findNavController().navigate(action)
     }
 
-    private fun handleOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Custom back press logic if needed
-                // For now, just call the default back press handling
-                isEnabled = false
-                requireActivity().onBackPressed()
-            }
-        })
-    }
+
 }

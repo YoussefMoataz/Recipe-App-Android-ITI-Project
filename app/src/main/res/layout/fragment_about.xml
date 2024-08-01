@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:id="@+id/itemView"
     android:background="@android:color/white"
-    tools:context=".about_us.view.AboutFragment">
+    tools:context=".recipe.about_us.view.AboutFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAbout"
