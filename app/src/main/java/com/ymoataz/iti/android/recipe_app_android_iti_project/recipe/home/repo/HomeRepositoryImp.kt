@@ -1,6 +1,7 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo
 
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.RemoteDataSource
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Category
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.MyResponse
 
 class HomeRepositoryImp(private val remoteDataSource: RemoteDataSource): HomeRepository {
@@ -11,4 +12,14 @@ class HomeRepositoryImp(private val remoteDataSource: RemoteDataSource): HomeRep
     override suspend fun searchByFirstLetter(letter: String): MyResponse {
         return remoteDataSource.searchByFirstLetter(letter)
     }
+
+    override suspend fun getCategories(): Category {
+        return remoteDataSource.getCategories()
+    }
+
+    override suspend fun getMealsByCategory(category: String): MyResponse {
+        return remoteDataSource.getMealsByCategory(category)
+    }
+
+
 }

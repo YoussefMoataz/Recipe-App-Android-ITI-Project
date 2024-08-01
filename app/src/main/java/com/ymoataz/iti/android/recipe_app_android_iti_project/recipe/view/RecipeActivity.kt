@@ -1,5 +1,3 @@
-package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view
-
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,7 +15,6 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity
 
-
 class RecipeActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var navHostFragment: NavHostFragment
@@ -26,20 +23,13 @@ class RecipeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
         setContentView(R.layout.activity_recipe)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
@@ -59,7 +49,7 @@ class RecipeActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.aboutFragment -> {
+                R.id.aboutFragment, R.id.mealsByCategoryFragment -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.GONE
                 }
@@ -67,6 +57,10 @@ class RecipeActivity : AppCompatActivity() {
                 R.id.detailsFragment -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.VISIBLE
+                }
+                R.id.mealsByCategoryFragment -> {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    bottomNavigationView.visibility = BottomNavigationView.GONE
                 }
 
                 else -> {
@@ -93,9 +87,7 @@ class RecipeActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("Are you sure you want to sign out?")
                     .setCancelable(false)
-                    .setPositiveButton(
-                        "Yes"
-                    ) { dialog, _ ->
+                    .setPositiveButton("Yes") { dialog, _ ->
                         AuthHelper.logout(this)
                         val bundle = Bundle()
                         bundle.putBoolean("isFromLogout", true)
@@ -107,9 +99,7 @@ class RecipeActivity : AppCompatActivity() {
                             .createPendingIntent().send()
                         finish()
                     }
-                    .setNegativeButton(
-                        "No"
-                    ) { dialog, _ -> dialog.cancel() }
+                    .setNegativeButton("No") { dialog, _ -> dialog.cancel() }
                 val alert = builder.create()
                 alert.show()
                 true

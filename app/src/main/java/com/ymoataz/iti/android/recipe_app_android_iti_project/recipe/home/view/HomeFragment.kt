@@ -1,5 +1,4 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,13 +24,17 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewMo
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.viewModel.HomeViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.APIClient
 import kotlinx.coroutines.launch
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.adapter.CategoryAdapter
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.CategoryX
 
 class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
-    MyAdapter.OnFavouriteIconClickListener {
+    MyAdapter.OnFavouriteIconClickListener,CategoryAdapter.OnCategoryClickListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: MyAdapter
     private lateinit var rv: RecyclerView
+    private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var categoriesRecyclerView: RecyclerView
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -40,8 +42,6 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-
 
         val mainCard = view.findViewById<View>(R.id.single_card)
         val cardImage = view.findViewById<ImageView>(R.id.recipeImageView)
@@ -55,13 +55,17 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         rv.setHasFixedSize(true)
         adapter = rv.adapter as MyAdapter
 
+        categoriesRecyclerView = view.findViewById(R.id.categories_recycler_view)
+        categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        categoryAdapter = CategoryAdapter(emptyList(), this)
+        categoriesRecyclerView.adapter = categoryAdapter
+
         rv.adapter = adapter
         gettingViewModelReady()
         viewModel.getRandomMeal()
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
             val meal = mealResponse.meals[0]
             cardTitle.text = meal.strMeal
-//            cardCategory.text = meal.strCategory
             Glide.with(this).load(meal.strMealThumb).into(cardImage)
 
             lifecycleScope.launch {
@@ -123,6 +127,12 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
                 findNavController().navigate(action)
             }
         }
+
+        viewModel.getCategories()
+        viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
+            categoryAdapter.updateData(categoryResponse.categories)
+        }
+
         return view
     }
 
@@ -169,6 +179,8 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
     }
-
-
+    override fun onCategoryClick(category: CategoryX) {
+        val action = HomeFragmentDirections.actionHomeFragmentToMealsByCategoryFragment(category.strCategory )
+        findNavController().navigate(action)
+    }
 }
