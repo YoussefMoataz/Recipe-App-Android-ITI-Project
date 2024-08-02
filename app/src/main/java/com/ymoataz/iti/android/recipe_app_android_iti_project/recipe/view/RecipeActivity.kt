@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 
 class RecipeActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
@@ -50,13 +51,24 @@ class RecipeActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        var badge = bottomNavigationView.getOrCreateBadge(R.id.favouritesFragment)
+        val badge = bottomNavigationView.getOrCreateBadge(R.id.favouritesFragment)
         badge.isVisible = true
-        badge.number = 99
+
+        AuthHelper.getUserID(this)?.let { userID ->
+            AppDatabase.getDatabase(this)
+                .recipeDao()
+                .getFavouriteRecipesCount(userID)
+                .observe(this){ count ->
+                    if (count == 0){
+                        badge.isVisible = false
+                    }
+                    badge.number = count
+                }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.aboutFragment, R.id.mealsByCategoryFragment -> {
+                R.id.aboutFragment -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.GONE
                 }
@@ -65,10 +77,10 @@ class RecipeActivity : AppCompatActivity() {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     bottomNavigationView.visibility = BottomNavigationView.VISIBLE
                 }
-                R.id.mealsByCategoryFragment -> {
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    bottomNavigationView.visibility = BottomNavigationView.GONE
-                }
+//                R.id.mealsByCategoryFragment -> {
+//                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//                    bottomNavigationView.visibility = BottomNavigationView.GONE
+//                }
 
                 else -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)

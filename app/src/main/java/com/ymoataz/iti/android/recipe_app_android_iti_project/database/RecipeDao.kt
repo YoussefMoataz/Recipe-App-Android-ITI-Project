@@ -23,4 +23,7 @@ interface RecipeDao {
     @Query("Delete FROM Recipe where meal =:meal")
     suspend fun deleteRecipeWithMeal(meal : Meal)
 
+    @Query("SELECT count(*) FROM Recipe WHERE userid = :userId")
+    fun getFavouriteRecipesCount(userId: Int): LiveData<Int>
+
 }
