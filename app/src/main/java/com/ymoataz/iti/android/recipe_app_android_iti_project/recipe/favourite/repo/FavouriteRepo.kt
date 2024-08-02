@@ -9,4 +9,6 @@ interface FavouriteRepo {
     suspend fun getAllRecipes(userId: Int): List<Recipe>
 
     suspend fun deleteRecipe(recipe: Recipe)
+
+    fun getFavouriteRecipesCount(userId: Int): LiveData<Int>
 }

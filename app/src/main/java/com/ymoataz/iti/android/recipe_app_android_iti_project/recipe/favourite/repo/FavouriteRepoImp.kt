@@ -17,4 +17,8 @@ class FavouriteRepoImp(private val recipeLocalDataSource: RecipeLocalDataSource)
         recipeLocalDataSource.deleteRecipe(recipe)
     }
 
+    override fun getFavouriteRecipesCount(userId: Int): LiveData<Int> {
+        return recipeLocalDataSource.getFavouriteRecipesCount(userId)
+    }
+
 }

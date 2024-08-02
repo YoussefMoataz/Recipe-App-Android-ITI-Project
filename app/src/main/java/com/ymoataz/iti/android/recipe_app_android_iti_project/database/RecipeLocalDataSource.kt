@@ -15,4 +15,6 @@ interface RecipeLocalDataSource {
     suspend fun deleteRecipe(recipe: Recipe)
 
     suspend fun deleteRecipeWithMeal(meal : Meal)
+
+    fun getFavouriteRecipesCount(userId: Int): LiveData<Int>
 }
