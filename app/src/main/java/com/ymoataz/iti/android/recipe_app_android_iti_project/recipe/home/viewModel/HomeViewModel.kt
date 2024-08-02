@@ -13,34 +13,42 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     private val _randomMeal = MutableLiveData<MyResponse>()
     val randomMeal: LiveData<MyResponse> = _randomMeal
+
     private val _searchedMeal = MutableLiveData<MyResponse>()
     val searchedMeal: LiveData<MyResponse> = _searchedMeal
+
     private val _categories = MutableLiveData<Category>()
     val categories: LiveData<Category> = _categories
+
     private val _mealsByCategory = MutableLiveData<MyResponse>()
     val mealsByCategory: LiveData<MyResponse> = _mealsByCategory
+
     fun getRandomMeal() {
         viewModelScope.launch {
             val response = homeRepository.getRandomMeal()
             _randomMeal.value = response
         }
     }
+
     fun searchByFirstLetter(letter: String) {
         viewModelScope.launch {
             val response = homeRepository.searchByFirstLetter(letter)
             _searchedMeal.value = response
         }
     }
+
     fun getCategories() {
         viewModelScope.launch {
             val response = homeRepository.getCategories()
             _categories.value = response
         }
     }
+
     fun getMealsByCategory(category: String) {
         viewModelScope.launch {
             val response = homeRepository.getMealsByCategory(category)
-            _mealsByCategory.value = response
+//            _mealsByCategory.value = response
+            _searchedMeal.value = response
         }
     }
 }

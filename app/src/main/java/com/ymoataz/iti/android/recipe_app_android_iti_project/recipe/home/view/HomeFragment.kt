@@ -180,7 +180,8 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         findNavController().navigate(action)
     }
     override fun onCategoryClick(category: CategoryX) {
-        val action = HomeFragmentDirections.actionHomeFragmentToMealsByCategoryFragment(category.strCategory )
-        findNavController().navigate(action)
+//        val action = HomeFragmentDirections.actionHomeFragmentToMealsByCategoryFragment(category.strCategory )
+//        findNavController().navigate(action)
+        viewModel.getMealsByCategory(category.strCategory)
     }
 }
