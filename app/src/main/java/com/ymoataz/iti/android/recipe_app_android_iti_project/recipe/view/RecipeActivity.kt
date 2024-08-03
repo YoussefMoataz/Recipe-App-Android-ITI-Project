@@ -61,6 +61,8 @@ class RecipeActivity : AppCompatActivity() {
                 .observe(this){ count ->
                     if (count == 0){
                         badge.isVisible = false
+                    }else{
+                        badge.isVisible = true
                     }
                     badge.number = count
                 }

@@ -64,6 +64,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/circular_background"
                     android:contentDescription="@string/category_txt"
+                    android:visibility="gone"
                     android:backgroundTint="@color/lavender"
                     android:src="@drawable/baseline_category_24"
                     app:tint="@color/white" />
