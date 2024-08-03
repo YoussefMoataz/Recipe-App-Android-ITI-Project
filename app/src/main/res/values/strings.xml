@@ -8,7 +8,7 @@
     <string name="favourites_screen">Favourites Screen</string>
     <string name="search_screen">Search Screen</string>
     <string name="recipe_image">Recipe Image</string>
-    <string name="textview">textview</string>
+    <string name="textview">Loading ...</string>
     <string name="favoriteborder_icon">favoriteBorder_icon</string>
     <string name="recommended_recipe">Recommended Recipe</string>
     <string name="category">Category</string>
