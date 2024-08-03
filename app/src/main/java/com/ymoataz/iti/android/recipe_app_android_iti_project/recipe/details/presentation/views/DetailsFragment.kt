@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +20,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.helpers.IngredientsHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.helpers.YoutubeHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.presentation.adapters.DetailsIngredientsAdapter
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
 
@@ -41,6 +46,7 @@ class DetailsFragment : Fragment() {
         val instructionsTextView = view.findViewById<ReadMoreTextView>(R.id.recipe_instructions_text_view)
         val ingredientsRecyclerView = view.findViewById<RecyclerView>(R.id.recipe_ingredients_recycler_view)
         val thumbImageView = view.findViewById<ImageView>(R.id.recipe_thumb_image_view)
+        val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
         youTubePlayerView = view.findViewById(R.id.recipe_youtube_player_view)
         var myYouTubePlayer: YouTubePlayer? = null
 
@@ -60,6 +66,8 @@ class DetailsFragment : Fragment() {
 
             ingredientsRecyclerView.adapter = ingredientsAdapter
             ingredientsRecyclerView.layoutManager = LinearLayoutManager(activity)
+
+            updateFavoriteIcon(favouriteIcon, recipe.favourite ?: false)
         }
 
         val youTubePlayerListener = object : AbstractYouTubePlayerListener(){
@@ -74,6 +82,25 @@ class DetailsFragment : Fragment() {
             }
         }
 
+        favouriteIcon.setOnClickListener {
+            lifecycleScope.launch {
+                recipe?.favourite?.let { isFavourite ->
+                    if (isFavourite) {
+                        AppDatabase.getDatabase(requireContext()).recipeDao()
+                            .deleteRecipeWithMeal(recipe.meal!!)
+                    } else {
+                        AuthHelper.getUserID(requireContext())?.let { userId ->
+                            val newRecipe = recipe.copy(favourite = true)
+                            AppDatabase.getDatabase(requireContext()).recipeDao()
+                                .insertRecipe(newRecipe)
+                        }
+                    }
+                    recipe.favourite = !recipe.favourite!!
+                    updateFavoriteIcon(favouriteIcon, recipe.favourite!!)
+                }
+            }
+        }
+
         lifecycle.addObserver(youTubePlayerView)
         youTubePlayerView.addYouTubePlayerListener(youTubePlayerListener)
 
@@ -84,5 +111,13 @@ class DetailsFragment : Fragment() {
         super.onDestroy()
         activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         youTubePlayerView.release();
+    }
+
+    private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
+        if (isFavourite) {
+            favouriteIcon.setImageResource(R.drawable.baseline_favorite_24)
+        } else {
+            favouriteIcon.setImageResource(R.drawable.baseline_favorite_border_24)
+        }
     }
 }

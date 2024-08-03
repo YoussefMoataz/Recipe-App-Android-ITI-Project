@@ -3,7 +3,6 @@ package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -12,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity
@@ -37,7 +37,8 @@ class RecipeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
@@ -58,10 +59,10 @@ class RecipeActivity : AppCompatActivity() {
             AppDatabase.getDatabase(this)
                 .recipeDao()
                 .getFavouriteRecipesCount(userID)
-                .observe(this){ count ->
-                    if (count == 0){
+                .observe(this) { count ->
+                    if (count == 0) {
                         badge.isVisible = false
-                    }else{
+                    } else {
                         badge.isVisible = true
                     }
                     badge.number = count
@@ -105,8 +106,9 @@ class RecipeActivity : AppCompatActivity() {
             }
 
             R.id.action_sign_out -> {
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("Are you sure you want to sign out?")
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Sign out")
+                    .setMessage("Are you sure you want to sign out?")
                     .setCancelable(false)
                     .setPositiveButton("Yes") { dialog, _ ->
                         AuthHelper.logout(this)
@@ -120,9 +122,10 @@ class RecipeActivity : AppCompatActivity() {
                             .createPendingIntent().send()
                         finish()
                     }
-                    .setNegativeButton("No") { dialog, _ -> dialog.cancel() }
-                val alert = builder.create()
-                alert.show()
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.cancel()
+                    }
+                    .show()
                 true
             }
 
