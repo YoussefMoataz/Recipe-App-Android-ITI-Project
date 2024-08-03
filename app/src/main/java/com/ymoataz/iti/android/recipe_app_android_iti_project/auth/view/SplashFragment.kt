@@ -22,7 +22,7 @@ class SplashFragment : Fragment() {
         val view= inflater.inflate(R.layout.fragment_splash, container, false)
 
         lifecycleScope.launch {
-            delay(1000)
+            delay(5000)
 
             if (AuthHelper.isUserLoggedIn(requireContext())) {
                 findNavController().navigate(R.id.action_splashFragment_to_recipeActivity)
