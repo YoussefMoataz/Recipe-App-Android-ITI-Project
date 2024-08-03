@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
@@ -25,6 +26,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.hom
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.data_sources.impl.RecipeRemoteDataSourceImpl
 import kotlinx.coroutines.launch
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.CategoryX
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.search.view.SearchFragment
 
 class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickListener,
     RecipesRecyclerViewAdapter.OnFavouriteIconClickListener, CategoryAdapter.OnCategoryClickListener {
@@ -92,14 +94,32 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                     } ?: false
 
                     if (currentIsFavourite) {
-                        AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(meal)
+
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Remove from Favorites")
+                            .setMessage("Are you sure you want to remove?")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                lifecycleScope.launch {
+                                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(meal)
+                                    updateFavoriteIcon(favouriteIcon, !currentIsFavourite)
+
+                                }
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .create()
+                            .show()
+
                     } else {
                         userId?.let { id ->
                             val recipe = Recipe(0, id, meal, true)
                             AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
+                            updateFavoriteIcon(favouriteIcon, !currentIsFavourite)
+
                         }
                     }
-                    updateFavoriteIcon(favouriteIcon, !currentIsFavourite)
                 }
             }
         }
@@ -190,4 +210,5 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         viewModel.getMealsByCategory(category.strCategory)
         recycleViewTitle.text = "${resources.getText(R.string.popular_now)}: ${category.strCategory}"
     }
+
 }
