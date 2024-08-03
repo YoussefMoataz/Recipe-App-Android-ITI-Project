@@ -51,6 +51,8 @@ class MyAdapter(
 
         Glide.with(context)
             .load(recipe.meal?.strMealThumb)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.error)
             .into(holder.image)
 
         updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)

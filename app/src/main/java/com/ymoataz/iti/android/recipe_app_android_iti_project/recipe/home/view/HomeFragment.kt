@@ -66,7 +66,11 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
             val meal = mealResponse.meals[0]
             cardTitle.text = meal.strMeal
-            Glide.with(this).load(meal.strMealThumb).into(cardImage)
+            Glide.with(this)
+                .load(meal.strMealThumb)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.error)
+                .into(cardImage)
 
             lifecycleScope.launch {
                 val userId = AuthHelper.getUserID(requireContext())
