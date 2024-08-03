@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.helpers.ConnectivityHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.Category
@@ -40,8 +41,11 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
                 _randomMeal.value = response
             } else {
                 Log.d("TAG", "searchByFirstLetter: okkkk first")
-                val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(1)
-                _randomMeal.value = MyResponse(response.map { it.meal!! })
+                AuthHelper.getUserID(context)?.let { userId ->
+                    val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(userId)
+                    _randomMeal.value = MyResponse(response.map { it.meal!! })
+                }
+
             }
         }
     }
@@ -53,8 +57,10 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
                 _searchedMeal.value = response
             } else {
                 Log.d("TAG", "searchByFirstLetter: okkkk second")
-                val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(1)
-                _searchedMeal.value = MyResponse(response.map { it.meal!! })
+                AuthHelper.getUserID(context)?.let { userId ->
+                    val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(userId)
+                    _searchedMeal.value = MyResponse(response.map { it.meal!! })
+                }
             }
         }
     }
