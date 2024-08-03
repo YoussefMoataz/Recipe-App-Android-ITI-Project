@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
-import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.repo.UserRepoImpl
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.repo.UserRepoImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.viewModel.UserViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.viewModel.UserViewModelFactory
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase

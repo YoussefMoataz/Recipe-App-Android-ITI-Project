@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.entities.User
-import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.repo.UserRepo
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.repo.UserRepo
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val repo: UserRepo):ViewModel() {
