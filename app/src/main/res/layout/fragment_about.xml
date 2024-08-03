@@ -7,7 +7,7 @@
     android:padding="16dp"
     android:id="@+id/itemView"
     android:background="@android:color/white"
-    tools:context=".recipe.about_us.view.AboutFragment">
+    tools:context=".recipe.feature.about_us.view.AboutFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAbout"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.LoginFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.RegisterFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.view.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -32,12 +32,12 @@
     </fragment>
     <activity
         android:id="@+id/recipeActivity"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.view.RecipeActivity"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.main.view.RecipeActivity"
         android:label="activity_recipe"
         tools:layout="@layout/activity_recipe" />
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.SplashFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.view.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action

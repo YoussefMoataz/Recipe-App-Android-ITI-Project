@@ -9,7 +9,7 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".auth.view.RegisterFragment">
+    tools:context=".auth.feature.auth.view.RegisterFragment">
 
 
     <TextView

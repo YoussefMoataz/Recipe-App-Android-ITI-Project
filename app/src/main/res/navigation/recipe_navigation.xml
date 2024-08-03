@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view.HomeFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.view.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view.SearchFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.search.view.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.favourite.view.FavouritesFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.favourite.view.FavouritesFragment"
         android:label="Favourites"
         tools:layout="@layout/fragment_favourites" >
         <action
@@ -37,17 +37,17 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.details.presentation.views.DetailsFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.details.view.views.DetailsFragment"
         android:label="Details"
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="recipe"
             app:nullable="true"
-            app:argType="com.ymoataz.iti.android.recipe_app_android_iti_project.database.Recipe" />
+            app:argType="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.about_us.view.AboutFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.about_us.view.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
     <action
@@ -55,7 +55,7 @@
         app:destination="@id/aboutFragment" />
     <activity
         android:id="@+id/authActivity"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.view.AuthActivity"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.view.AuthActivity"
         android:label="activity_auth"
         tools:layout="@layout/activity_auth"/>
     <action
@@ -63,7 +63,7 @@
         app:destination="@id/authActivity" />
     <fragment
         android:id="@+id/mealsByCategoryFragment"
-        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.view.MealsByCategoryFragment"
+        android:name="com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.view.MealsByCategoryFragment"
         android:label="fragment_meals_by_category"
         tools:layout="@layout/fragment_meals_by_category" >
         <argument
