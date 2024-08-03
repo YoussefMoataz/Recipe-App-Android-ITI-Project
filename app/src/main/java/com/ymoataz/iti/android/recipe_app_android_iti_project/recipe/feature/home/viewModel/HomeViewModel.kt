@@ -1,18 +1,23 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.viewModel
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.repo.HomeRepository
+import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.helpers.ConnectivityHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.Category
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.meals.Meal
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.meals.MyResponse
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.repo.HomeRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
+class HomeViewModel(private val homeRepository: HomeRepository, val context: Context) :
+    ViewModel() {
 
     private val _randomMeal = MutableLiveData<MyResponse>()
     val randomMeal: LiveData<MyResponse> = _randomMeal
@@ -28,22 +33,41 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     fun getRandomMeal() {
         viewModelScope.launch {
-            val response = homeRepository.getRandomMeal()
-            _randomMeal.value = response
+//            val response = homeRepository.getRandomMeal()
+//            _randomMeal.value = response
+            if (ConnectivityHelper.isOnline(context)) {
+                val response = homeRepository.getRandomMeal()
+                _randomMeal.value = response
+            } else {
+                Log.d("TAG", "searchByFirstLetter: okkkk first")
+                val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(1)
+                _randomMeal.value = MyResponse(response.map { it.meal!! })
+            }
         }
     }
 
     fun searchByFirstLetter(letter: String) {
         viewModelScope.launch {
-            val response = homeRepository.searchByFirstLetter(letter)
-            _searchedMeal.value = response
+            if (ConnectivityHelper.isOnline(context)) {
+                val response = homeRepository.searchByFirstLetter(letter)
+                _searchedMeal.value = response
+            } else {
+                Log.d("TAG", "searchByFirstLetter: okkkk second")
+                val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(1)
+                _searchedMeal.value = MyResponse(response.map { it.meal!! })
+            }
         }
     }
 
     fun getCategories() {
         viewModelScope.launch {
-            val response = homeRepository.getCategories()
-            _categories.value = response
+            if (ConnectivityHelper.isOnline(context)) {
+                val response = homeRepository.getCategories()
+                _categories.value = response
+            } else {
+                Log.d("TAG", "searchByFirstLetter: okkkk second")
+                _categories.value = Category(emptyList())
+            }
         }
     }
 

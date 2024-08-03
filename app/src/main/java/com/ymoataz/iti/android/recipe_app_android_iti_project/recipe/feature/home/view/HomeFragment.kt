@@ -154,7 +154,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         val viewModelFactory = HomeViewModelFactory(
             repository = HomeRepositoryImp(
                 recipeRemoteDataSource = RecipeRemoteDataSourceImpl
-            )
+            ),
+            context = requireContext()
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
