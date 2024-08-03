@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/recipeImageView"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:contentDescription="@string/recipe_image"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/recipeTitleTextView"
