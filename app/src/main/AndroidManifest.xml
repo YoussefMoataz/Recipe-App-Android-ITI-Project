@@ -14,12 +14,12 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
         <activity
-            android:name=".recipe.view.RecipeActivity"
+            android:name=".recipe.feature.main.view.RecipeActivity"
             android:exported="true" >
 
         </activity>
         <activity
-            android:name=".auth.view.AuthActivity"
+            android:name=".auth.feature.auth.view.AuthActivity"
             android:exported="true">
 
             <intent-filter>

@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.daos.UserDao
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.entities.User
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.converters.MealConverter
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.daos.RecipeDao
 
 @Database(entities = [User::class, Recipe::class], version = 1)
-@TypeConverters(Converters::class)
+@TypeConverters(MealConverter::class)
 abstract class AppDatabase:RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun recipeDao(): RecipeDao
