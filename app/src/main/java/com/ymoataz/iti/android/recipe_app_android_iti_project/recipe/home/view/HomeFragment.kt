@@ -35,6 +35,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
     private lateinit var rv: RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categoriesRecyclerView: RecyclerView
+    private lateinit var recycleViewTitle: TextView
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -48,6 +49,7 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         val cardTitle = view.findViewById<TextView>(R.id.recipeTitleTextView)
         val cardCategory = view.findViewById<TextView>(R.id.recipeCategoryTextView)
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
+        recycleViewTitle = view.findViewById<TextView>(R.id.recycle_view_title)
 
         rv = view.findViewById(R.id.home_recycle_view)
         rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -183,5 +185,6 @@ class HomeFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
 //        val action = HomeFragmentDirections.actionHomeFragmentToMealsByCategoryFragment(category.strCategory )
 //        findNavController().navigate(action)
         viewModel.getMealsByCategory(category.strCategory)
+        recycleViewTitle.text = "${resources.getText(R.string.popular_now)}: ${category.strCategory}"
     }
 }
