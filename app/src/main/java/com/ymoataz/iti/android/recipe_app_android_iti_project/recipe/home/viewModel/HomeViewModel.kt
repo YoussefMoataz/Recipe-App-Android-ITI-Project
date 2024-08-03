@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.home.repo.HomeRepository
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Category
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.Meal
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.network.dto.MyResponse
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
@@ -48,7 +51,16 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         viewModelScope.launch {
             val response = homeRepository.getMealsByCategory(category)
 //            _mealsByCategory.value = response
-            _searchedMeal.value = response
+            val mealDeferreds = response.meals.map { meal ->
+                async { getMealByID(meal.idMeal!!) }
+            }
+
+            val meals = mealDeferreds.awaitAll()
+            _searchedMeal.value = MyResponse(meals)
         }
+    }
+
+    suspend fun getMealByID(mealID: String): Meal {
+        return homeRepository.getMealByID(mealID).meals[0]
     }
 }

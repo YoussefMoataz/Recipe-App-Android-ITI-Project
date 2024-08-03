@@ -21,4 +21,7 @@ interface APIService {
     @GET("api/json/v1/1/filter.php")
     suspend fun getMealsByCategory(@Query("c") category: String): MyResponse
 
+    @GET("api/json/v1/1/lookup.php")
+    suspend fun getMealByID(@Query("i") mealID: String): MyResponse
+
 }

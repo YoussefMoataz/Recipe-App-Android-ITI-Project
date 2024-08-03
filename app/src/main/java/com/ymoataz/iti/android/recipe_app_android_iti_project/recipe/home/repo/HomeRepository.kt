@@ -8,4 +8,5 @@ interface HomeRepository {
     suspend fun searchByFirstLetter(letter: String): MyResponse
     suspend fun getCategories(): Category
     suspend fun getMealsByCategory(category: String): MyResponse
+    suspend fun getMealByID(mealID: String): MyResponse
 }
