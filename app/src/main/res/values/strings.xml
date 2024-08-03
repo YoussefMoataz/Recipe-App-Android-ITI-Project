@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Recipe-App-Android-ITI-Project</string>
+    <string name="app_name">Matbakhna</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="favourites">Favourites</string>
@@ -8,9 +8,9 @@
     <string name="favourites_screen">Favourites Screen</string>
     <string name="search_screen">Search Screen</string>
     <string name="recipe_image">Recipe Image</string>
-    <string name="textview">textview</string>
+    <string name="textview">Loading ...</string>
     <string name="favoriteborder_icon">favoriteBorder_icon</string>
-    <string name="recomended_recipe">Recomended Recipe</string>
+    <string name="recommended_recipe">Recommended Recipe</string>
     <string name="category">Category</string>
     <string name="e_mail">E-Mail</string>
     <string name="password">Password</string>

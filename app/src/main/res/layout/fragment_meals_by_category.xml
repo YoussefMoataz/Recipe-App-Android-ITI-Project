@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/mealsByCategoryFragment"
-    tools:context=".recipe.home.view.MealsByCategoryFragment">
+    tools:context=".recipe.feature.home.view.MealsByCategoryFragment">
 
     <TextView
         android:layout_width="wrap_content"

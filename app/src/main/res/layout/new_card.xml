@@ -18,8 +18,8 @@
         <!-- Recipe Image with rounded corners -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/recipeImageView"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/recipe_image"
@@ -46,7 +46,7 @@
                 android:maxLines="1"
                 android:text="@string/textview"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <!-- Horizontal layout for category icon, text, and favorite icon -->
@@ -64,6 +64,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/circular_background"
                     android:contentDescription="@string/category_txt"
+                    android:visibility="gone"
                     android:backgroundTint="@color/lavender"
                     android:src="@drawable/baseline_category_24"
                     app:tint="@color/white" />
@@ -79,8 +80,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="italic"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp" />
+                    android:layout_gravity="center_vertical" />
 
                 <!-- Spacer to push favorite icon to the end -->
                 <View
