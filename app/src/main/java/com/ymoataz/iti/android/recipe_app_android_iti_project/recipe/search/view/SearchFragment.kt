@@ -1,15 +1,17 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.search.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
@@ -40,7 +43,7 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-        val notFoundTextView = view.findViewById<TextView>(R.id.notFoundTextView)
+        val notFoundAnimationView = view.findViewById<LottieAnimationView>(R.id.noResultsAnimationView)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
 
@@ -53,6 +56,7 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
 
         viewModel.searchResult.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
+
             lifecycleScope.launch {
                 val recipes = AuthHelper.getUserID(requireContext())?.let {
                     AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it)
@@ -65,11 +69,13 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
 
                 if (searchView.query.isEmpty() || recipeList.isEmpty()) {
                     if (recipeList.isEmpty()) {
-                        notFoundTextView.visibility = View.VISIBLE
+                        notFoundAnimationView.visibility = View.VISIBLE
+                        notFoundAnimationView.playAnimation()
                     }
                     recipeList = emptyList()
                 } else {
-                    notFoundTextView.visibility = View.GONE
+                    notFoundAnimationView.visibility = View.GONE
+                    notFoundAnimationView.pauseAnimation()
                 }
 
                 adapter.updateData(recipeList)
@@ -118,4 +124,5 @@ class SearchFragment : Fragment(), MyAdapter.OnRecipeItemClickListener,
             }
         }
     }
+
 }
