@@ -21,5 +21,9 @@ class HomeRepositoryImp(private val remoteDataSource: RemoteDataSource): HomeRep
         return remoteDataSource.getMealsByCategory(category)
     }
 
+    override suspend fun getMealByID(mealID: String): MyResponse {
+        return remoteDataSource.getMealByID(mealID)
+    }
+
 
 }

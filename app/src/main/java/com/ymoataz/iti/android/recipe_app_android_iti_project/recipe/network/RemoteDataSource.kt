@@ -10,4 +10,5 @@ interface RemoteDataSource {
     suspend fun searchByFirstLetter(@Query("f") letter: String): MyResponse
     suspend fun getCategories(): Category
     suspend fun getMealsByCategory(@Query("c") category: String): MyResponse
+    suspend fun getMealByID(mealID: String): MyResponse
 }
