@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.colormoon.readmoretextview.ReadMoreTextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -85,17 +86,35 @@ class DetailsFragment : Fragment() {
             lifecycleScope.launch {
                 recipe?.favourite?.let { isFavourite ->
                     if (isFavourite) {
-                        AppDatabase.getDatabase(requireContext()).recipeDao()
-                            .deleteRecipeWithMeal(recipe.meal!!)
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Remove from Favorites")
+                            .setMessage("Are you sure you want to remove?")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                lifecycleScope.launch {
+                                    AppDatabase.getDatabase(requireContext()).recipeDao()
+                                        .deleteRecipeWithMeal(recipe.meal!!)
+                                    recipe.favourite = !recipe.favourite!!
+                                    updateFavoriteIcon(favouriteIcon, recipe.favourite!!)
+                                }
+
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .create()
+                            .show()
+
                     } else {
                         AuthHelper.getUserID(requireContext())?.let { userId ->
                             val newRecipe = recipe.copy(favourite = true)
                             AppDatabase.getDatabase(requireContext()).recipeDao()
                                 .insertRecipe(newRecipe)
+                            recipe.favourite = !recipe.favourite!!
+                            updateFavoriteIcon(favouriteIcon, recipe.favourite!!)
                         }
                     }
-                    recipe.favourite = !recipe.favourite!!
-                    updateFavoriteIcon(favouriteIcon, recipe.favourite!!)
+
                 }
             }
         }

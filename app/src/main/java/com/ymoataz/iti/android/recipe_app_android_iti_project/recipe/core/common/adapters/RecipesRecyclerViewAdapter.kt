@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe
@@ -56,9 +57,10 @@ class RecipesRecyclerViewAdapter(
         updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)
 
         holder.favouriteIcon.setOnClickListener {
-            onFavouriteIconClickListener.onClick(recipe.favourite!!, recipe)
-            recipe.favourite = !recipe.favourite!!
-            updateFavoriteIcon(holder.favouriteIcon, recipe.favourite!!)
+            if(recipe.favourite!!)
+                showConfirmationDialog(holder.favouriteIcon, recipe)
+            else
+                toggleFavourite(holder.favouriteIcon, recipe)
         }
     }
 
@@ -81,5 +83,25 @@ class RecipesRecyclerViewAdapter(
 
     interface OnFavouriteIconClickListener {
         fun onClick(isFavourite: Boolean, recipe: Recipe)
+    }
+    private fun showConfirmationDialog(favouriteIcon: ImageButton, recipe: Recipe) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Remove from Favorites")
+            .setMessage("Are you sure you want to remove?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                toggleFavourite(favouriteIcon, recipe)
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun toggleFavourite(favouriteIcon: ImageButton, recipe: Recipe) {
+        onFavouriteIconClickListener.onClick(recipe.favourite!!, recipe)
+        recipe.favourite = !recipe.favourite!!
+        updateFavoriteIcon(favouriteIcon, recipe.favourite!!)
     }
 }
