@@ -38,8 +38,6 @@ class DetailsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_details, container, false)
 
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
-
         val nameTextView = view.findViewById<TextView>(R.id.recipe_name_text_view)
         val areaTextView = view.findViewById<TextView>(R.id.recipe_area_text_view)
         val categoryTextView = view.findViewById<TextView>(R.id.recipe_category_text_view)
@@ -48,7 +46,6 @@ class DetailsFragment : Fragment() {
         val thumbImageView = view.findViewById<ImageView>(R.id.recipe_thumb_image_view)
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
         youTubePlayerView = view.findViewById(R.id.recipe_youtube_player_view)
-        var myYouTubePlayer: YouTubePlayer? = null
 
         val recipe = args.recipe
 
@@ -76,9 +73,7 @@ class DetailsFragment : Fragment() {
                     if (it.isEmpty()) return
 
                     youTubePlayer.cueVideo(it, 0f)
-                    myYouTubePlayer = youTubePlayer
                 }
-
             }
         }
 
@@ -127,7 +122,6 @@ class DetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
         youTubePlayerView.release();
     }
 
