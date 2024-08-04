@@ -65,7 +65,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
 
         rv.adapter = adapter
         gettingViewModelReady()
-//        viewModel.getRandomMeal()
+
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
             if (mealResponse.meals.isEmpty()) {
                 Glide.with(this)
@@ -133,8 +133,6 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             }
         }
 
-        val randomChar = getRandomLetter()
-//        viewModel.searchByFirstLetter(randomChar.toString())
         viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
             lifecycleScope.launch {
@@ -160,17 +158,11 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             }
         }
 
-//        viewModel.getCategories()
         viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
             categoryAdapter.updateData(categoryResponse.categories)
         }
 
         return view
-    }
-
-    private fun refreshScreen() {
-        val randomChar = getRandomLetter()
-//        viewModel.searchByFirstLetter(randomChar.toString())
     }
 
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
@@ -189,10 +181,6 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             context = requireContext()
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-    }
-
-    private fun getRandomLetter(): Char {
-        return ('a'..'z').random()
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
