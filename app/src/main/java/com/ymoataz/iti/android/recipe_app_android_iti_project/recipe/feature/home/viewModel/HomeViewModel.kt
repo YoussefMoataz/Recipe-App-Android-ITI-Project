@@ -66,7 +66,7 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
         viewModelScope.launch {
             if (connectivityStatus == ConnectivityObserver.Status.Available) {
                 var response = homeRepository.searchByFirstLetter(letter)
-                while (response.meals.isEmpty()){
+                while (response?.meals?.isEmpty() == true){
                     response = homeRepository.searchByFirstLetter(getRandomLetter().toString())
                 }
                 _searchedMeal.value = response
@@ -85,51 +85,6 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
                 val response = homeRepository.getCategories()
                 _categories.value = response
             } else {
-                _categories.value = Category(emptyList())
-            }
-        }
-    }
-
-    fun getRandomMeal() {
-        viewModelScope.launch {
-//            val response = homeRepository.getRandomMeal()
-//            _randomMeal.value = response
-            if (ConnectivityHelper.isOnline(context)) {
-                val response = homeRepository.getRandomMeal()
-                _randomMeal.value = response
-            } else {
-                Log.d("TAG", "searchByFirstLetter: okkkk first")
-                AuthHelper.getUserID(context)?.let { userId ->
-                    val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(userId)
-                    _randomMeal.value = MyResponse(response.map { it.meal!! })
-                }
-
-            }
-        }
-    }
-
-    fun searchByFirstLetter(letter: String) {
-        viewModelScope.launch {
-            if (ConnectivityHelper.isOnline(context)) {
-                val response = homeRepository.searchByFirstLetter(letter)
-                _searchedMeal.value = response
-            } else {
-                Log.d("TAG", "searchByFirstLetter: okkkk second")
-                AuthHelper.getUserID(context)?.let { userId ->
-                    val response = AppDatabase.getDatabase(context).recipeDao().getAllRecipes(userId)
-                    _searchedMeal.value = MyResponse(response.map { it.meal!! })
-                }
-            }
-        }
-    }
-
-    fun getCategories() {
-        viewModelScope.launch {
-            if (ConnectivityHelper.isOnline(context)) {
-                val response = homeRepository.getCategories()
-                _categories.value = response
-            } else {
-                Log.d("TAG", "searchByFirstLetter: okkkk second")
                 _categories.value = Category(emptyList())
             }
         }
