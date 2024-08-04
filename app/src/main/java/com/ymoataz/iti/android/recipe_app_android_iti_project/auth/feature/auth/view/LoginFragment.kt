@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.data_sources.impl.UserLocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
+import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.data_sources.impl.UserLocalDataSourceImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.repo.UserRepoImpl
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.viewModel.UserViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.feature.auth.viewModel.UserViewModelFactory
@@ -33,25 +33,23 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view=inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        if (args.isFromLogout) {
-            activity?.onBackPressedDispatcher?.addCallback(requireActivity(),
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        activity?.finish()
-                    }
-                })
-        }
+        activity?.onBackPressedDispatcher?.addCallback(requireActivity(),
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            })
 
         val userDao = AppDatabase.getDatabase(requireContext()).userDao()
         val localDataSource = UserLocalDataSourceImpl(userDao)
         val userRepository = UserRepoImpl(localDataSource)
         val userViewModelFactory = UserViewModelFactory(userRepository)
-        userViewModel= ViewModelProvider(this,userViewModelFactory).get(UserViewModel::class.java)
-        val emailEditText=view.findViewById<EditText>(R.id.editTextEmailAddress)
-        val passwordEditText=view.findViewById<EditText>(R.id.editTextPassword)
-        val regBtn=view.findViewById<Button>(R.id.btnRegister)
+        userViewModel = ViewModelProvider(this, userViewModelFactory).get(UserViewModel::class.java)
+        val emailEditText = view.findViewById<EditText>(R.id.editTextEmailAddress)
+        val passwordEditText = view.findViewById<EditText>(R.id.editTextPassword)
+        val regBtn = view.findViewById<Button>(R.id.btnRegister)
         addTextWatcher(emailEditText)
         addTextWatcher(passwordEditText)
         //userViewModel.clearUsers()
@@ -88,18 +86,19 @@ class LoginFragment : Fragment() {
             if (isSuccess) {
                 Log.d("asd->>", "successsss!!")
                 userViewModel.getUserIdByEmail(email)
-                userViewModel.userIdByEmail.observe(viewLifecycleOwner){userID->
-                    context?.let { AuthHelper.saveUserDataInSP(it,userID) }
+                userViewModel.userIdByEmail.observe(viewLifecycleOwner) { userID ->
+                    context?.let { AuthHelper.saveUserDataInSP(it, userID) }
                 }
                 findNavController().navigate(R.id.action_loginFragment_to_recipeActivity)
                 activity?.finish()
             } else {
                 Log.d("asd->>", "Faileddd!!")
-                Toast.makeText(activity,"Wrong email or password!",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Wrong email or password!", Toast.LENGTH_LONG).show()
             }
         }
         return view
     }
+
     private fun addTextWatcher(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
