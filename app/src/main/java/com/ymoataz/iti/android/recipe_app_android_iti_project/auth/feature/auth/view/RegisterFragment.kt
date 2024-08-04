@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.local.repo.UserRepoImpl
@@ -184,7 +185,7 @@ class RegisterFragment : Fragment() {
             - Be at least 4 characters long.
         """.trimIndent()
 
-        val dialog = activity?.let { AlertDialog.Builder(it).create() }
+        val dialog = activity?.let { MaterialAlertDialogBuilder(it).create() }
         if (dialog != null) {
             dialog.setMessage(passwordCriteria)
             dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { dialogInterface, _ ->
