@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
@@ -27,6 +30,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.networ
 import kotlinx.coroutines.launch
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.CategoryX
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.search.view.SearchFragment
+import kotlinx.coroutines.delay
 
 class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickListener,
     RecipesRecyclerViewAdapter.OnFavouriteIconClickListener, CategoryAdapter.OnCategoryClickListener {
@@ -37,6 +41,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var categoriesRecyclerView: RecyclerView
     private lateinit var recycleViewTitle: TextView
+    private lateinit var noInternetAnimation: LottieAnimationView
+    private lateinit var scrollView: NestedScrollView
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -51,7 +57,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         val cardCategory = view.findViewById<TextView>(R.id.recipeCategoryTextView)
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
         recycleViewTitle = view.findViewById<TextView>(R.id.recycle_view_title)
-
+        noInternetAnimation = view.findViewById(R.id.no_internet_animation)
+        scrollView = view.findViewById(R.id.home_scroll_view)
         rv = view.findViewById(R.id.home_recycle_view)
         rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv.adapter = RecipesRecyclerViewAdapter(emptyList(), view.context, this, this)
@@ -67,6 +74,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         gettingViewModelReady()
 
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
+
+
             if (mealResponse.meals.isEmpty()) {
                 Glide.with(this)
                     .load(R.drawable.error)
@@ -136,6 +145,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
             lifecycleScope.launch {
+
                 val userId = AuthHelper.getUserID(requireContext())
                 val recipes = userId?.let { AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it) }
                 val recipeList = data.map { meal ->
@@ -181,6 +191,15 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             context = requireContext()
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+    }
+    private fun showNoInternetAnimation() {
+        noInternetAnimation.visibility = View.VISIBLE
+        scrollView.visibility = View.GONE
+    }
+
+    private fun hideNoInternetAnimation() {
+        noInternetAnimation.visibility = View.GONE
+        scrollView.visibility = View.VISIBLE
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
