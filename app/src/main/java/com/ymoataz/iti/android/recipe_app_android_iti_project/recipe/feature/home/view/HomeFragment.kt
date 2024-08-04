@@ -65,8 +65,17 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
 
         rv.adapter = adapter
         gettingViewModelReady()
-        viewModel.getRandomMeal()
+//        viewModel.getRandomMeal()
         viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
+            if (mealResponse.meals.isEmpty()) {
+                Glide.with(this)
+                    .load(R.drawable.error)
+                    .placeholder(R.drawable.loading)
+                    .into(cardImage)
+                cardTitle.text = "No Internet connection!"
+                return@observe
+            }
+
             val meal = mealResponse.meals[0]
             cardTitle.text = meal.strMeal
             Glide.with(this)
@@ -125,7 +134,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         }
 
         val randomChar = getRandomLetter()
-        viewModel.searchByFirstLetter(randomChar.toString())
+//        viewModel.searchByFirstLetter(randomChar.toString())
         viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
             lifecycleScope.launch {
@@ -136,12 +145,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                     Recipe(0, userId, meal, isFavourite)
                 }
 
-                if (recipeList.isEmpty()) {
-                    refreshScreen()
-                } else {
-                    adapter.updateData(recipeList)
-                    adapter.notifyDataSetChanged()
-                }
+                adapter.updateData(recipeList)
+                adapter.notifyDataSetChanged()
             }
         }
 
@@ -153,7 +158,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             }
         }
 
-        viewModel.getCategories()
+//        viewModel.getCategories()
         viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
             categoryAdapter.updateData(categoryResponse.categories)
         }
@@ -163,7 +168,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
 
     private fun refreshScreen() {
         val randomChar = getRandomLetter()
-        viewModel.searchByFirstLetter(randomChar.toString())
+//        viewModel.searchByFirstLetter(randomChar.toString())
     }
 
     private fun updateFavoriteIcon(favouriteIcon: ImageButton, isFavourite: Boolean) {
@@ -178,7 +183,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         val viewModelFactory = HomeViewModelFactory(
             repository = HomeRepositoryImp(
                 recipeRemoteDataSource = RecipeRemoteDataSourceImpl
-            )
+            ),
+            context = requireContext()
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }

@@ -69,7 +69,8 @@ class MealsByCategoryFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeI
         val viewModelFactory = HomeViewModelFactory(
             repository = HomeRepositoryImp(
                 recipeRemoteDataSource = RecipeRemoteDataSourceImpl
-            )
+            ),
+            context = requireContext()
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
