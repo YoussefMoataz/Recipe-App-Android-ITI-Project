@@ -151,10 +151,12 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         }
 
         mainCard.setOnClickListener {
-            viewModel.randomMeal.value?.meals?.get(0)?.let {
-                val recipe = Recipe(0, 1, it, false)
-                val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
-                findNavController().navigate(action)
+            viewModel.randomMeal.value?.meals?.get(0)?.let { meal ->
+                AuthHelper.getUserID(requireContext())?.let { userId ->
+                    val recipe = Recipe(0, userId, meal, false)
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                    findNavController().navigate(action)
+                }
             }
         }
 
