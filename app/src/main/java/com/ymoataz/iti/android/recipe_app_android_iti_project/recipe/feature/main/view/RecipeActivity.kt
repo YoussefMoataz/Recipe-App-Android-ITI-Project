@@ -78,7 +78,7 @@ class RecipeActivity : AppCompatActivity() {
 
                 R.id.detailsFragment -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    bottomNavigationView.visibility = BottomNavigationView.VISIBLE
+                    bottomNavigationView.visibility = BottomNavigationView.GONE
                 }
 //                R.id.mealsByCategoryFragment -> {
 //                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
