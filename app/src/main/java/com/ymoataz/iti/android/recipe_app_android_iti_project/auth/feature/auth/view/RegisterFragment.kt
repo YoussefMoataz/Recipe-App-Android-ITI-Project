@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -41,6 +42,14 @@ class RegisterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
        val view= inflater.inflate(R.layout.fragment_register, container, false)
+
+        activity?.onBackPressedDispatcher?.addCallback(requireActivity(),
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.action_global_loginFragment)
+                }
+            })
+
         val userDao = AppDatabase.getDatabase(requireContext()).userDao()
         val localDataSource = UserLocalDataSourceImpl(userDao)
         val userRepository = UserRepoImpl(localDataSource)
