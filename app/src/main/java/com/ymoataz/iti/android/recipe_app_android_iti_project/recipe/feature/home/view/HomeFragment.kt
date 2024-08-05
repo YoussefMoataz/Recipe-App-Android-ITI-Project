@@ -1,4 +1,5 @@
 package com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.view
+
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -21,20 +21,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
 import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.AuthHelper
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.adapters.RecipesRecyclerViewAdapter
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.connectivity.ConnectivityObserver
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.data_sources.impl.RecipeRemoteDataSourceImpl
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.CategoryX
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.viewModel.HomeViewModelFactory
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.data_sources.impl.RecipeRemoteDataSourceImpl
 import kotlinx.coroutines.launch
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.categories.CategoryX
-import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.search.view.SearchFragment
-import kotlinx.coroutines.delay
 
 class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickListener,
-    RecipesRecyclerViewAdapter.OnFavouriteIconClickListener, CategoryAdapter.OnCategoryClickListener {
+    RecipesRecyclerViewAdapter.OnFavouriteIconClickListener,
+    CategoryAdapter.OnCategoryClickListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: RecipesRecyclerViewAdapter
@@ -52,7 +51,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        var categoryTitle= view.findViewById<TextView>(R.id.categories_title)
+        var categoryTitle = view.findViewById<TextView>(R.id.categories_title)
         val mainCard = view.findViewById<View>(R.id.single_card)
         val cardImage = view.findViewById<ImageView>(R.id.recipeImageView)
         val cardTitle = view.findViewById<TextView>(R.id.recipeTitleTextView)
@@ -63,43 +62,28 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         loadingAnimation = view.findViewById(R.id.loading_food_animation)
         scrollView = view.findViewById(R.id.home_scroll_view)
         rv = view.findViewById(R.id.home_recycle_view)
-        rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv.adapter = RecipesRecyclerViewAdapter(emptyList(), view.context, this, this)
         rv.setHasFixedSize(true)
         adapter = rv.adapter as RecipesRecyclerViewAdapter
 
         categoriesRecyclerView = view.findViewById(R.id.categories_recycler_view)
-        categoriesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        categoriesRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         categoryAdapter = CategoryAdapter(emptyList(), this)
         categoriesRecyclerView.adapter = categoryAdapter
 
         rv.adapter = adapter
         gettingViewModelReady()
 
-        viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
-
-
-            if (mealResponse.meals.isEmpty()) {
-                Glide.with(this)
-                    .load(R.drawable.loading)
-                    .into(cardImage)
-//                cardTitle.text = "No Internet connection!"
-                return@observe
-            }
-
-            val meal = mealResponse.meals[0]
-            cardTitle.text = meal.strMeal
-            Glide.with(this)
-                .load(meal.strMealThumb)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.error)
-                .into(cardImage)
-
-            lifecycleScope.launch {
-                val userId = AuthHelper.getUserID(requireContext())
-                val recipes = userId?.let { AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it) }
-                val isFavourite = recipes?.any { recipe -> recipe.meal?.idMeal == meal.idMeal } ?: false
-                updateFavoriteIcon(favouriteIcon, isFavourite)
+        mainCard.setOnClickListener {
+            viewModel.randomMeal.value?.meals?.get(0)?.let { meal ->
+                AuthHelper.getUserID(requireContext())?.let { userId ->
+                    val recipe = Recipe(0, userId, meal, false)
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                    findNavController().navigate(action)
+                }
             }
         }
 
@@ -108,9 +92,10 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                 viewModel.randomMeal.value?.meals?.get(0)?.let { meal ->
                     val userId = AuthHelper.getUserID(requireContext())
                     val currentIsFavourite = userId?.let { id ->
-                        AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(id)?.any { recipe ->
-                            recipe.meal?.idMeal == meal.idMeal
-                        } ?: false
+                        AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(id)
+                            ?.any { recipe ->
+                                recipe.meal?.idMeal == meal.idMeal
+                            } ?: false
                     } ?: false
 
                     if (currentIsFavourite) {
@@ -120,7 +105,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                             .setMessage("Are you sure you want to remove?")
                             .setPositiveButton("Yes") { dialog, _ ->
                                 lifecycleScope.launch {
-                                    AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(meal)
+                                    AppDatabase.getDatabase(requireContext()).recipeDao()
+                                        .deleteRecipeWithMeal(meal)
                                     updateFavoriteIcon(favouriteIcon, !currentIsFavourite)
 
                                 }
@@ -135,7 +121,8 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                     } else {
                         userId?.let { id ->
                             val recipe = Recipe(0, id, meal, true)
-                            AppDatabase.getDatabase(requireContext()).recipeDao().insertRecipe(recipe)
+                            AppDatabase.getDatabase(requireContext()).recipeDao()
+                                .insertRecipe(recipe)
                             updateFavoriteIcon(favouriteIcon, !currentIsFavourite)
 
                         }
@@ -144,13 +131,56 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             }
         }
 
+        viewModel.randomMeal.observe(viewLifecycleOwner) { mealResponse ->
+
+            if (mealResponse.meals.isEmpty()) {
+                Glide.with(this)
+                    .load(R.drawable.loading)
+                    .into(cardImage)
+//                cardTitle.text = "No Internet connection!"
+                return@observe
+            }
+
+            val meal = mealResponse.meals.random()
+            cardTitle.text = meal.strMeal
+            Glide.with(this)
+                .load(meal.strMealThumb)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.error)
+                .into(cardImage)
+
+            lifecycleScope.launch {
+                val userId = AuthHelper.getUserID(requireContext())
+                val recipes = userId?.let {
+                    AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it)
+                }
+                val isFavourite = recipes?.any { recipe ->
+                    recipe.meal?.idMeal == meal.idMeal
+                } ?: false
+                updateFavoriteIcon(favouriteIcon, isFavourite)
+            }
+        }
+
+        viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
+            if (categoryResponse.categories.isEmpty()) {
+                categoryTitle = view.findViewById<TextView>(R.id.categories_title)
+                categoryTitle.visibility = View.GONE
+                categoriesRecyclerView.visibility = View.GONE
+                return@observe
+            }
+
+            categoriesRecyclerView.visibility = View.VISIBLE
+            categoryTitle.visibility = View.VISIBLE
+            categoryAdapter.updateData(categoryResponse.categories)
+        }
+
         viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
 
-            if(data.isEmpty() && viewModel.connectionStatus.value != ConnectivityObserver.Status.Available){
+            if (data.isEmpty() && viewModel.connectionStatus.value != ConnectivityObserver.Status.Available) {
                 showNoInternetAnimation()
                 return@observe
-            }else{
+            } else {
                 recycleViewTitle.text = resources.getText(R.string.popular_now)
                 hideNoInternetAnimation()
             }
@@ -158,37 +188,19 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
             lifecycleScope.launch {
 
                 val userId = AuthHelper.getUserID(requireContext())
-                val recipes = userId?.let { AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it) }
+                val recipes = userId?.let {
+                    AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(it)
+                }
                 val recipeList = data.map { meal ->
-                    val isFavourite = recipes?.any { recipe -> recipe.meal?.idMeal == meal.idMeal } ?: false
+                    val isFavourite = recipes?.any { recipe ->
+                        recipe.meal?.idMeal == meal.idMeal
+                    } ?: false
                     Recipe(0, userId, meal, isFavourite)
                 }
 
                 adapter.updateData(recipeList)
                 adapter.notifyDataSetChanged()
             }
-        }
-
-        mainCard.setOnClickListener {
-            viewModel.randomMeal.value?.meals?.get(0)?.let { meal ->
-                AuthHelper.getUserID(requireContext())?.let { userId ->
-                    val recipe = Recipe(0, userId, meal, false)
-                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
-                    findNavController().navigate(action)
-                }
-            }
-        }
-
-        viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
-            if (categoryResponse.categories.isEmpty()) {
-                 categoryTitle = view.findViewById<TextView>(R.id.categories_title)
-                categoryTitle.visibility = View.GONE
-                categoriesRecyclerView.visibility = View.GONE
-                return@observe
-            }
-            categoriesRecyclerView.visibility = View.VISIBLE
-            categoryTitle?.text = resources.getText(R.string.categories)
-            categoryAdapter.updateData(categoryResponse.categories)
         }
 
         return view
@@ -211,24 +223,24 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
+
     private fun showNoInternetAnimation() {
         noInternetAnimation.visibility = View.VISIBLE
         scrollView.visibility = View.GONE
         loadingAnimation.visibility = View.GONE
-
     }
 
     private fun hideNoInternetAnimation() {
         noInternetAnimation.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
         loadingAnimation.visibility = View.GONE
-
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         lifecycleScope.launch {
             if (isFavourite) {
-                AppDatabase.getDatabase(requireContext()).recipeDao().deleteRecipeWithMeal(recipe.meal!!)
+                AppDatabase.getDatabase(requireContext()).recipeDao()
+                    .deleteRecipeWithMeal(recipe.meal!!)
             } else {
                 AuthHelper.getUserID(requireContext())?.let { userId ->
                     val newRecipe = recipe.copy(favourite = true)
@@ -242,11 +254,13 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
     }
+
     override fun onCategoryClick(category: CategoryX) {
 //        val action = HomeFragmentDirections.actionHomeFragmentToMealsByCategoryFragment(category.strCategory )
 //        findNavController().navigate(action)
         viewModel.getMealsByCategory(category.strCategory)
-        recycleViewTitle.text = "${resources.getText(R.string.popular_now)}: ${category.strCategory}"
+        recycleViewTitle.text =
+            "${resources.getText(R.string.popular_now)}: ${category.strCategory}"
     }
 
 }
