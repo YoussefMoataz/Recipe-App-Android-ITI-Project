@@ -35,11 +35,16 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
     private val _mealsByCategory = MutableLiveData<MyResponse>()
     val mealsByCategory: LiveData<MyResponse> = _mealsByCategory
 
+    private val _connectionStatus = MutableLiveData<ConnectivityObserver.Status>()
+    val connectionStatus : LiveData<ConnectivityObserver.Status> = _connectionStatus
+
     init{
         val connectivityObserver = NetworkConnectivityObserver(context)
 
         viewModelScope.launch {
             connectivityObserver.observe().collect { status ->
+                _connectionStatus.value = status
+
                 getRandomMeal(status)
                 searchByFirstLetter(getRandomLetter().toString(), status)
                 getCategories(status)
