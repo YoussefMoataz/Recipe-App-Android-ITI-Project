@@ -23,6 +23,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.auth.core.common.A
 import com.ymoataz.iti.android.recipe_app_android_iti_project.database.AppDatabase
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.local.entities.Recipe
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.adapters.RecipesRecyclerViewAdapter
+import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common.connectivity.ConnectivityObserver
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.repo.HomeRepositoryImp
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.viewModel.HomeViewModel
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.home.viewModel.HomeViewModelFactory
@@ -42,6 +43,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
     private lateinit var categoriesRecyclerView: RecyclerView
     private lateinit var recycleViewTitle: TextView
     private lateinit var noInternetAnimation: LottieAnimationView
+    private lateinit var loadingAnimation: LottieAnimationView
     private lateinit var scrollView: NestedScrollView
 
     @SuppressLint("NotifyDataSetChanged")
@@ -58,6 +60,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         val favouriteIcon = view.findViewById<ImageButton>(R.id.favoriteIcon)
         recycleViewTitle = view.findViewById<TextView>(R.id.recycle_view_title)
         noInternetAnimation = view.findViewById(R.id.no_internet_animation)
+        loadingAnimation = view.findViewById(R.id.loading_food_animation)
         scrollView = view.findViewById(R.id.home_scroll_view)
         rv = view.findViewById(R.id.home_recycle_view)
         rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -78,10 +81,9 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
 
             if (mealResponse.meals.isEmpty()) {
                 Glide.with(this)
-                    .load(R.drawable.error)
-                    .placeholder(R.drawable.loading)
+                    .load(R.drawable.loading)
                     .into(cardImage)
-                cardTitle.text = "No Internet connection!"
+//                cardTitle.text = "No Internet connection!"
                 return@observe
             }
 
@@ -144,6 +146,14 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
 
         viewModel.searchedMeal.observe(viewLifecycleOwner) { searchResult ->
             val data = searchResult?.meals ?: emptyList()
+
+            if(data.isEmpty() && viewModel.connectionStatus.value != ConnectivityObserver.Status.Available){
+                showNoInternetAnimation()
+                return@observe
+            }else{
+                hideNoInternetAnimation()
+            }
+
             lifecycleScope.launch {
 
                 val userId = AuthHelper.getUserID(requireContext())
@@ -195,11 +205,13 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
     private fun showNoInternetAnimation() {
         noInternetAnimation.visibility = View.VISIBLE
         scrollView.visibility = View.GONE
+        loadingAnimation.visibility = View.GONE
     }
 
     private fun hideNoInternetAnimation() {
         noInternetAnimation.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
+        loadingAnimation.visibility = View.GONE
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {

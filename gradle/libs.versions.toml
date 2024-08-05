@@ -21,7 +21,7 @@ ksp = "1.9.21-1.0.15"
 activity = "1.9.0"
 lifeCyclelive = "2.6.1"
 lifecycleview = "2.6.1"
-lottieVersion="3.4.0"
+lottieVersion="3.5.0"
 picassoVersion="2.8"
 uiGraphicsAndroid = "1.6.8"
 [libraries]
