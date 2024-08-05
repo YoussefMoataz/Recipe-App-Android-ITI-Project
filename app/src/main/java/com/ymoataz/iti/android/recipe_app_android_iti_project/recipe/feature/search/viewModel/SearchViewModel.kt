@@ -12,6 +12,7 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.common
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.core.network.models.meals.MyResponse
 import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.search.repo.SearchRepository
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class SearchViewModel (private val searchRepository: SearchRepository ,val context: Context): ViewModel(){
     private val _searchResult= MutableLiveData<MyResponse>()
@@ -42,7 +43,7 @@ class SearchViewModel (private val searchRepository: SearchRepository ,val conte
                             AppDatabase.getDatabase(context).recipeDao().getAllRecipes(userId)
                         val recipes = MyResponse(response.map { it.meal!! })
                         val myResponse = MyResponse(recipes.meals.filter {
-                            it.strMeal?.contains(mealName)!!
+                            it.strMeal?.lowercase()?.contains(mealName.lowercase())!!
 
 
                         })
