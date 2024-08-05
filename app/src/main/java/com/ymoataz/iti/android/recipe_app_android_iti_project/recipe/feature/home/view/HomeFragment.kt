@@ -52,7 +52,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        var categoryTitle= view.findViewById<TextView>(R.id.categories_title)
         val mainCard = view.findViewById<View>(R.id.single_card)
         val cardImage = view.findViewById<ImageView>(R.id.recipeImageView)
         val cardTitle = view.findViewById<TextView>(R.id.recipeTitleTextView)
@@ -151,6 +151,7 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
                 showNoInternetAnimation()
                 return@observe
             }else{
+                recycleViewTitle.text = resources.getText(R.string.popular_now)
                 hideNoInternetAnimation()
             }
 
@@ -179,6 +180,14 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         }
 
         viewModel.categories.observe(viewLifecycleOwner) { categoryResponse ->
+            if (categoryResponse.categories.isEmpty()) {
+                 categoryTitle = view.findViewById<TextView>(R.id.categories_title)
+                categoryTitle.visibility = View.GONE
+                categoriesRecyclerView.visibility = View.GONE
+                return@observe
+            }
+            categoriesRecyclerView.visibility = View.VISIBLE
+            categoryTitle?.text = resources.getText(R.string.categories)
             categoryAdapter.updateData(categoryResponse.categories)
         }
 
@@ -206,12 +215,14 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         noInternetAnimation.visibility = View.VISIBLE
         scrollView.visibility = View.GONE
         loadingAnimation.visibility = View.GONE
+
     }
 
     private fun hideNoInternetAnimation() {
         noInternetAnimation.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
         loadingAnimation.visibility = View.GONE
+
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {

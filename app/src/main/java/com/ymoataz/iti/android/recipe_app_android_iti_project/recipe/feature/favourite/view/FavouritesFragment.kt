@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.snackbar.Snackbar
 
 import com.ymoataz.iti.android.recipe_app_android_iti_project.R
@@ -26,9 +27,10 @@ import com.ymoataz.iti.android.recipe_app_android_iti_project.recipe.feature.fav
 class FavouritesFragment : Fragment(),
     RecipesRecyclerViewAdapter.OnRecipeItemClickListener,
     RecipesRecyclerViewAdapter.OnFavouriteIconClickListener {
-
+    private lateinit var noInternetAnimation: LottieAnimationView
+    private lateinit var loadingAnimation: LottieAnimationView
     private lateinit var favouriteViewModel: FavouriteViewModel
-
+    private lateinit var favouritesRecyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +46,9 @@ class FavouritesFragment : Fragment(),
             )
         ).create(FavouriteViewModel::class.java)
 
-        val favouritesRecyclerView = view.findViewById<RecyclerView>(R.id.favourites_recycler_view)
-
+        favouritesRecyclerView = view.findViewById(R.id.favourites_recycler_view)
+        noInternetAnimation = view.findViewById(R.id.no_internet_animation)
+        loadingAnimation = view.findViewById(R.id.loading_food_animation)
         AuthHelper.getUserID(requireContext())?.let { favouriteViewModel.getAllRecipes(it) }
 
         favouritesRecyclerView.layoutManager = LinearLayoutManager(view.context)
@@ -56,6 +59,11 @@ class FavouritesFragment : Fragment(),
         favouriteViewModel.favouriteRecipes.observe(viewLifecycleOwner) { recipe ->
             recipe?.let {
                 favouriteAdapter.updateData(it)
+                if (it.isEmpty()) {
+                    showNoInternetAnimation()
+                    return@observe
+                }
+                hideNoInternetAnimation()
             }
         }
 
@@ -96,7 +104,17 @@ class FavouritesFragment : Fragment(),
         val action = FavouritesFragmentDirections.actionFavouritesFragmentToDetailsFragment(recipe)
         findNavController().navigate(action)
     }
+    private fun showNoInternetAnimation() {
+        noInternetAnimation.visibility = View.VISIBLE
+        favouritesRecyclerView.visibility = View.GONE
+        loadingAnimation.visibility = View.GONE
+    }
 
+    private fun hideNoInternetAnimation() {
+        noInternetAnimation.visibility = View.GONE
+        favouritesRecyclerView.visibility = View.VISIBLE
+        loadingAnimation.visibility = View.GONE
+    }
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
         if (isFavourite) {
             favouriteViewModel.deleteRecipe(recipe)

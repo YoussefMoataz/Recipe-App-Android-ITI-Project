@@ -71,9 +71,11 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
         viewModelScope.launch {
             if (connectivityStatus == ConnectivityObserver.Status.Available) {
                 var response = homeRepository.searchByFirstLetter(letter)
-                while (response?.meals?.isEmpty() == true){
-                    response = homeRepository.searchByFirstLetter(getRandomLetter().toString())
+                while (response?.meals.isNullOrEmpty()) {
+                    val newLetter = getRandomLetter().toString()
+                    response = homeRepository.searchByFirstLetter(newLetter)
                 }
+
                 _searchedMeal.value = response
             } else {
                 AuthHelper.getUserID(context)?.let { userId ->
@@ -83,6 +85,7 @@ class HomeViewModel(private val homeRepository: HomeRepository, val context: Con
             }
         }
     }
+
 
     private fun getCategories(connectivityStatus: ConnectivityObserver.Status) {
         viewModelScope.launch {
