@@ -43,7 +43,7 @@ class SearchFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickL
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         val rv = view.findViewById<RecyclerView>(R.id.searchRecycleView)
 
-        val searchViewModelFactory = SearchViewModelFactory(SearchRepositoryImp(RecipeRemoteDataSourceImpl))
+        val searchViewModelFactory = SearchViewModelFactory(SearchRepositoryImp(RecipeRemoteDataSourceImpl), requireContext())
         viewModel = ViewModelProvider(this, searchViewModelFactory)[SearchViewModel::class.java]
 
         rv.layoutManager = LinearLayoutManager(view.context)
@@ -63,13 +63,18 @@ class SearchFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickL
                     Recipe(0, AuthHelper.getUserID(requireContext()), meal, isFavourite)
                 }
 
-                if (searchView.query.isEmpty() || recipeList.isEmpty()) {
-                    if (recipeList.isEmpty()) {
-                        notFoundAnimationView.visibility = View.VISIBLE
-                        notFoundAnimationView.playAnimation()
-                    }
+                if (searchView.query.isEmpty()) {
                     recipeList = emptyList()
-                } else {
+                    notFoundAnimationView.visibility = View.GONE
+                    notFoundAnimationView.pauseAnimation()
+                }
+                else if(recipeList.isEmpty())
+                {
+                    notFoundAnimationView.visibility = View.VISIBLE
+                    notFoundAnimationView.playAnimation()
+                    recipeList = emptyList()
+                }
+                else {
                     notFoundAnimationView.visibility = View.GONE
                     notFoundAnimationView.pauseAnimation()
                 }
