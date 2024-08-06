@@ -75,14 +75,23 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
         categoriesRecyclerView.adapter = categoryAdapter
 
         rv.adapter = adapter
+
         gettingViewModelReady()
 
         mainCard.setOnClickListener {
             viewModel.randomMeal.value?.meals?.get(0)?.let { meal ->
                 AuthHelper.getUserID(requireContext())?.let { userId ->
-                    val recipe = Recipe(0, userId, meal, false)
-                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
-                    findNavController().navigate(action)
+                    lifecycleScope.launch {
+                        val isFavourite  = AppDatabase.getDatabase(requireContext()).recipeDao().getAllRecipes(userId)
+                            ?.any { recipe ->
+                                recipe.meal?.idMeal == meal.idMeal
+                            }
+                        val recipe = Recipe(0, userId, meal, isFavourite)
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(recipe)
+                        findNavController().navigate(action)
+                    }
+
+
                 }
             }
         }
