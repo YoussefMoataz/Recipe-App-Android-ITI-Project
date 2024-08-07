@@ -240,9 +240,9 @@ class HomeFragment : Fragment(), RecipesRecyclerViewAdapter.OnRecipeItemClickLis
     }
 
     private fun hideNoInternetAnimation() {
+        loadingAnimation.visibility = View.GONE
         noInternetAnimation.visibility = View.GONE
         scrollView.visibility = View.VISIBLE
-        loadingAnimation.visibility = View.GONE
     }
 
     override fun onClick(isFavourite: Boolean, recipe: Recipe) {
